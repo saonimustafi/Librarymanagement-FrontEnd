@@ -1,0 +1,97 @@
+.book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #ffffe0;
+  transition: all 0.3s ease-in-out;
+  transform: scale(1);
+}
+
+.book:hover {
+  transform: scale(1.05);
+}
+
+.book img {
+  width: 40%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.book-info.hovered {
+  background-color: #fffacd;
+}
+
+.book-title {
+  margin: 5px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.book-author {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.book-description {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.book-success {
+  color: green;
+  margin-top: 5px;
+}
+
+.book-error {
+  color: red;
+  margin-top: 5px;
+}
+
+.book-info .request-book {
+  background-color: #e6a612;
+}
+
+.book-info .delete-request {
+  background-color: #c75142;
+}
+
+.book-info button {
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border-radius: 4px;
+}
+
+.book-info button:hover {
+  opacity: 0.9;
+}
+
+.book-info .request-book:hover {
+  background-color: #c79912;
+}
+
+.book-info .delete-request:hover {
+  background-color: #d65747;
+}

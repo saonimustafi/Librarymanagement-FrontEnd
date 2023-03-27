@@ -1,0 +1,66 @@
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo-link {
+    margin-right: 20px;
+  }
+  
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .company-name {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    /* text-transform: uppercase; */
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    text-decoration: none;
+  }
+  
+  
+  .menu {
+    display: flex;
+    margin: 0;
+    margin-left: auto;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .menu-item {
+    margin-right: 20px;
+  }
+  
+  .menu-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .menu-link:hover {
+    color: #0077c0;
+  }
+  
+  .sign-in-link {
+    color: #0077c0;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .sign-in-link:hover {
+    color: #005ca3;
+  }
+  
