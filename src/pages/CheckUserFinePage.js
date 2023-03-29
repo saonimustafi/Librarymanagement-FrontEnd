@@ -35,6 +35,12 @@ const CheckUserFinePage = () => {
             }))
     : null
 
+    const totalFine = combinedData ? 
+    (combinedData.reduce((total, userActivityItem) => 
+        (total + userActivityItem.books.reduce((itemTotal, book) =>itemTotal+(book.fineToPay || 0), 0) ,0)
+        )
+    ) : 0;
+
     return(
         <div>
             <h2 className="fine-table-header">User Fine</h2>
@@ -46,7 +52,7 @@ const CheckUserFinePage = () => {
                         <th>Book Name</th>
                         <th>Return Date</th>
                         <th>Actual Return Date</th>
-                        <th>Fine</th>
+                        <th colSpan="9">Fine</th>
                     </tr>
                     </thead>
                         <tbody>
@@ -60,7 +66,7 @@ const CheckUserFinePage = () => {
                                             <td>{activityListItem.books[0].bookName}</td>
                                             <td>{activityListItem.books[0].returnDate}</td>
                                             <td>{activityListItem.books[0].actualReturnDate ? activityListItem.books[0].actualReturnDate : null}</td>
-                                            <td>{activityListItem.books[0].fineToPay}</td>
+                                            <td colSpan="9">{activityListItem.books[0].fineToPay}</td>
                                         </tr>
                                     
                                         {activityListItem.books.slice(1).map((book) => (
@@ -69,7 +75,7 @@ const CheckUserFinePage = () => {
                                                 <td>{book.bookName}</td>
                                                 <td>{book.returnDate}</td>
                                                 <td>{book.actualReturnDate}</td>
-                                                <td>{book.fineToPay}</td>
+                                                <td colSpan="9">{book.fineToPay}</td>
                                             </tr>
                                         ))}
                                     </React.Fragment>
@@ -78,6 +84,20 @@ const CheckUserFinePage = () => {
                                 <tr>
                                     <td colSpan="8">Loading...</td>
                                 </tr>
+                                )
+                            }
+                            {
+                                combinedData && (
+                                    <tr>
+                                        <td id="fine-table-total-fine" colSpan="8">Total Fine</td>
+                                        <td>
+                                            {
+                                                combinedData
+                                                .flatMap((activityItem) => activityItem.books)
+                                                .reduce((totalFine, book) => totalFine + (book.fineToPay || 0),0)
+                                            }
+                                        </td>
+                                    </tr>
                                 )
                             }
                         </tbody>  
