@@ -24,28 +24,28 @@ const UserActivitiesPage = () => {
         userActivities()
     }, [])
 
-    const combinedData = (activity && userBooks) ? activity.map((activityItem) => ({
-       ...activityItem,
-       books: activityItem.books.map((book) => ({
-        ...book,
-        bookImage: userBooks.find(b => b.title === book.bookName)?.image || ''}))
-       })) : null
-    
+        const combinedData = (activity && userBooks) ? activity.map((activityItem) => ({
+            ...activityItem,
+            books: activityItem.books.map((book) => ({
+                ...book,
+                bookImage: userBooks.find(b => b.title === book.bookName)?.image || ''}))
+            })) : null
+            
     return (
         <div>
-
-          <h2>Activity History</h2>
+          <h2 className='activity-table-header'>Activity History</h2>
           <table className="activity-table">
             <thead>
                 <tr>
-                <th>User ID</th>
-                <th>Book Image</th>
-                <th>Book Name</th>
-                <th>Requested Date</th>
-                <th>Approval Date</th>
-                <th>Approval Status</th>
-                <th>CheckOut Date</th>
-                <th>Return Date</th>
+                    <th>User ID</th>
+                    <th>Book Image</th>
+                    <th>Book Name</th>
+                    <th>Requested Date</th>
+                    <th>Approval Date</th>
+                    <th>Approval Status</th>
+                    <th>CheckOut Date</th>
+                    <th>Return Date</th>
+                    <th>Actual Return Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,6 +62,7 @@ const UserActivitiesPage = () => {
                                 <td>{activityItem.books[0].approvalStatus}</td>
                                 <td>{activityItem.books[0].checkoutDate}</td>
                                 <td>{activityItem.books[0].returnDate}</td>
+                                <td>{(activityItem.books[0].actualReturnDate)? activityItem.books[0].actualReturnDate : null}</td>
                             </tr>
                             {activityItem.books.slice(1).map((book)=> (
                                 <tr key = {`${activityItem.user_id} - ${book.id}`}>
@@ -72,6 +73,7 @@ const UserActivitiesPage = () => {
                                     <td>{book.approvalStatus}</td>
                                     <td>{book.checkoutDate}</td>
                                     <td>{book.returnDate}</td>
+                                    <td>{(book.actualReturnDate)? book.actualReturnDate : null}</td>
                                 </tr>
                             ))}
                         </React.Fragment>

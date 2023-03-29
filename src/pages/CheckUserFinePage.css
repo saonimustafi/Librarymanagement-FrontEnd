@@ -1,0 +1,58 @@
+/* CheckUserFinePage.css */
+
+/* Style for the table */
+.fine-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Style for table headers */
+  .fine-table th {
+    background-color: #ddd;
+    font-weight: bold;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  /* Style for table rows */
+  .fine-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  /* Style for the book image */
+  .fine-table img {
+    height: 100px;
+    width: auto;
+  }
+
+  .fine-table-header {
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+  
+  /* Media query for small screens */
+  @media (max-width: 600px) {
+    /* Reduce font size for table headers */
+    .fine-table th {
+      font-size: 14px;
+      padding: 6px;
+    }
+    
+    /* Reduce font size for table rows */
+    .fine-table td {
+      font-size: 14px;
+      padding: 6px;
+    }
+    
+    /* Reduce size of book image */
+    .fine-table img {
+      height: 80px;
+    }
+
+    
+  }
+  
