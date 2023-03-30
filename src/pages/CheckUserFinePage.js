@@ -6,12 +6,13 @@ const CheckUserFinePage = () => {
     const { user_id } = useParams()
     const [userActivityList, setUserActivityList] = useState(null)
     const [userBooks, setUserBooks] = useState(null)
+    const [combinedData, setCombinedData] = useState(null)
 
     useEffect(() => {
         async function fetchDetails() {
             try {
             // user_id is being passed as a query parameter here
-            const activityListResponse = await fetch("http://localhost:3004/userActivities?:user_id")
+            const activityListResponse = await fetch(`http://localhost:3004/userActivities?user_id=${user_id}`)
             const activityListData = await activityListResponse.json();
             setUserActivityList(activityListData);
 
@@ -26,20 +27,24 @@ const CheckUserFinePage = () => {
         fetchDetails();
     }, [user_id])
 
-    const combinedData = 
-        (userActivityList && userBooks) ? userActivityList.map((activityListItem) => ({
-            ...activityListItem,
-            books: activityListItem.books.map((book) => ({
-                ...book,
-                bookImage: userBooks.find(b => b.title === book.bookName)?.image || ''}))
-            }))
-    : null
+    useEffect(() => {
+        function generateCombinedData() {
 
-    const totalFine = combinedData ? 
-    (combinedData.reduce((total, userActivityItem) => 
-        (total + userActivityItem.books.reduce((itemTotal, book) =>itemTotal+(book.fineToPay || 0), 0) ,0)
-        )
-    ) : 0;
+            if(userActivityList && userBooks)  {
+                const combinedDatagenerated = 
+                userActivityList.map((activityListItem) => ({
+                    ...activityListItem,
+                    books: activityListItem.books.map((book) => ({
+                        ...book,
+                        bookImage: userBooks.find(b => b.title === book.bookName)?.image || ''}))
+                    }))
+                    setCombinedData(combinedDatagenerated)
+            }
+        }
+        generateCombinedData()
+    }
+    , [userActivityList, userBooks]
+    )
 
     return(
         <div>
@@ -62,7 +67,7 @@ const CheckUserFinePage = () => {
                                     <React.Fragment key={activityListItem.user_id}>
                                         <tr>
                                             <td rowSpan={activityListItem.books.length}>{activityListItem.user_id}</td>
-                                            <td><img src = {activityListItem.books[0].bookImage} alt = {`${activityListItem.books[0].bookImage} cover`} /></td>
+                                            <td><img src = {activityListItem.books[0].bookImage} alt = {`${activityListItem.books[0].bookName} cover`} /></td>
                                             <td>{activityListItem.books[0].bookName}</td>
                                             <td>{activityListItem.books[0].returnDate}</td>
                                             <td>{activityListItem.books[0].actualReturnDate ? activityListItem.books[0].actualReturnDate : null}</td>
@@ -71,7 +76,7 @@ const CheckUserFinePage = () => {
                                     
                                         {activityListItem.books.slice(1).map((book) => (
                                             <tr key = {`${activityListItem.user_id} - ${book.id}`}>
-                                                <td><img src = {book.bookImage} alt = {`${book.bookImage} cover`}/></td>
+                                                <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
                                                 <td>{book.bookName}</td>
                                                 <td>{book.returnDate}</td>
                                                 <td>{book.actualReturnDate}</td>

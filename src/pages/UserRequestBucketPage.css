@@ -1,0 +1,43 @@
+.request-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .request-table th, .request-table td {
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  
+  .request-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .request-table td {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .request-table td img {
+    width: 80px;
+    height: auto;
+  }
+
+  .request-table-header {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .activity-table th,
+    .activity-table td {
+      padding: 4px;
+      font-size: 12px;
+    }
+  
+    .request-table td img {
+      max-width: 80px;
+    }
+  }
+  

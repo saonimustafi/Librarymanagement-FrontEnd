@@ -1,31 +1,34 @@
 import React, { useEffect, useState }  from 'react'
-// import { books } from '../data/books';
-import './UserActivitiesPage.css';
+import { useParams } from "react-router-dom";
+import './UserRequestBucketPage.css';
 
-const UserActivitiesPage = () => {
+const UserRequestBucketPage = () => {
     const [activity, setActivity] = useState(null)
     const [userBooks, setUserBooks] = useState(null)
+    const { user_id } = useParams()
     const [combinedDataFiltered, setCombinedDataFiltered] = useState(null)
+
 
     useEffect(() => {
         async function userActivities() {
             try {
-                const activityResponse = await fetch(`http://localhost:3004/userActivities`);
+                const activityResponse = await fetch(`http://localhost:3004/userActivities?user_id=${user_id}`);
                 const activityData = await activityResponse.json();
                 setActivity(activityData);
 
                 const bookResponse = await fetch(`http://localhost:3004/books`);
                 const bookData = await bookResponse.json();
                 setUserBooks(bookData);
+
             }
             catch(error) {
                 console.error(error)
             }
         }
         userActivities()
-    }, [])
+    }, [user_id])
 
-
+    
     useEffect(() => {
         function generateCombinedData() {
             
@@ -34,7 +37,7 @@ const UserActivitiesPage = () => {
                 .map((activityItem) => ({
                     ...activityItem,
                     books: activityItem.books
-                    .filter(book => ((book.approvalStatus === "Approved" && book.checkoutDate !== "")||(book.approvalStatus === 'Declined')))
+                    .filter(book => ((book.approvalStatus === 'Pending' ||book.approvalStatus === 'Approved')&&(book.checkoutDate === "")))
                     .map((book) => ({
                         ...book,
                         bookImage: (book && userBooks.find(b => b.title === book.bookName)) ? 
@@ -43,16 +46,16 @@ const UserActivitiesPage = () => {
                 }))
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
                 setCombinedDataFiltered(combinedDataModified)
-            }         
+            }
         }
         generateCombinedData()
     },[activity, userBooks])
     
-     
+    
     return (
         <div>
-          <h2 className='activity-table-header'>Activity History</h2>
-          <table className="activity-table">
+            <h2 className="request-table-header">Request Bucket</h2>
+          <table className="request-table">
             <thead>
                 <tr>
                     <th>User ID</th>
@@ -68,7 +71,8 @@ const UserActivitiesPage = () => {
             </thead>
             <tbody>
                 {
-                  combinedDataFiltered ? (
+                    
+                  (combinedDataFiltered && combinedDataFiltered.length > 0) ? (
                     combinedDataFiltered.map((activityItem) => (
                         <React.Fragment key = {activityItem.user_id}>
                             <tr>
@@ -84,7 +88,7 @@ const UserActivitiesPage = () => {
                             </tr>
                             {activityItem.books.slice(1).map((book)=> (
                                 <tr key = {`${activityItem.user_id} - ${book.id}`}>
-                                    <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
+                                    <td><img src = {book.bookImage} alt = {`${book.bookImage} cover`}/></td>
                                     <td>{book.bookName}</td>
                                     <td>{book.dateRequested}</td>
                                     <td>{book.approvalDate}</td>
@@ -96,8 +100,7 @@ const UserActivitiesPage = () => {
                             ))}
                         </React.Fragment>
                     ))
-                  ) : 
-                    (
+                  ) : (
                         (combinedDataFiltered && combinedDataFiltered.length === 0) ? (
                         <tr>
                             <td colSpan="8">No request exists for user</td>
@@ -106,14 +109,13 @@ const UserActivitiesPage = () => {
                         <tr>
                             <td colSpan="8">Loading...</td>
                         </tr>
-                        )
                     )
+                  )
                 }
             </tbody>
           </table>
         </div>
-      );
+    )
 }
 
-export default UserActivitiesPage;
-
+export default UserRequestBucketPage;
