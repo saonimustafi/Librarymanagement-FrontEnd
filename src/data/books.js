@@ -29,10 +29,10 @@ export const books =
       description: "Tolkien’s fantasy epic is one of the top must-read books out there. Set in Middle Earth – a world full of hobbits, elves, orcs, goblins, and wizards – The Lord of the Rings will take you on an unbelievable adventure."
     },
     {
-      id: 4,
-      title: "The Secret",
-      author: "Rhonda Byrne",
-      image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.buzzfeed.com%2Florynbrantz%2F9-inspiring-books-you-should-read-if-you-loved-the-secret&psig=AOvVaw2B-R_KjQHyz-Yc3jVD116A&ust=1680076959054000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCNiP9MSU_v0CFQAAAAAdAAAAABAM",
-      description: "The Secret covers the law of attraction and states that the power of positive thinking can help you do anything you want. According to the author, positive thoughts can bring good things your way, and this bestselling book explains the secret to a joyful life."
+      "id": 4,
+      "title": "The Secret",
+      "author": "Rhonda Byrne",
+      "image": "https://www.thesecret.tv/wp-content/uploads/2015/05/The-Secret-Documentary.png",
+      "description": "The Secret covers the law of attraction and states that the power of positive thinking can help you do anything you want. According to the author, positive thoughts can bring good things your way, and this bestselling book explains the secret to a joyful life."
     }
   ]

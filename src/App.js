@@ -6,6 +6,7 @@ import RegisterUserPage from './pages/RegisterUserPage';
 import UserActivitiesPage from './pages/UserActivitiesPage';
 import CheckUserFinePage from './pages/CheckUserFinePage';
 import UserRequestBucketPage from './pages/UserRequestBucketPage';
+import UserActivitiesPageAdmin from './pages/UserActivitiesPageAdmin';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/userActivities" element={<UserActivitiesPage />} />
           <Route path="/checkUserFine/:user_id" element={<CheckUserFinePage />}/>
           <Route path="/checkUserRequestBucket/:user_id" element={<UserRequestBucketPage />} />
+          <Route path="/userActivitiesAdmin" element={<UserActivitiesPageAdmin />} />
         </Routes>
       </div>
     </Router>
