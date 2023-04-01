@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react'
 // import { books } from '../data/books'
-import './UserActivitiesPage.css';
+import './UserActivitiesPageAdmin.css';
 
 
 const UserActivitiesPageAdmin = () => {
@@ -84,20 +84,20 @@ const UserActivitiesPageAdmin = () => {
     return (
         <> 
         <div>
-            <form onSubmit={handleShowActivity}>
-                <label htmlFor = "userEmail">User Name:</label>
+        <h2 className = 'activity-table-admin-header'>Activity History</h2>
+            <form className = 'activity-table-admin-form' onSubmit={handleShowActivity}>
+                <label className = 'activity-table-admin-label' htmlFor = "userEmail">User Name:</label>
                 <input type = "text" id = "userEmailInput" name="useremail"></input>
-                <button id="myButton" type="submit">Show Activity History</button>
+                <button id="myButton" type="submit">Show</button>
             </form>
         </div>
 
           <div>
-          <h2 className = 'activity-table-header'>Activity History</h2>
+          
           {showTable &&
-          <table className = "activity-table">
+          <table className = "activity-table-admin">
             <thead>
                 <tr>
-                    <th>User ID</th>
                     <th>Book Image</th>
                     <th>Book Name</th>
                     <th>Requested Date</th>
@@ -112,22 +112,10 @@ const UserActivitiesPageAdmin = () => {
                 {
                   combinedDataFiltered ? (
                     combinedDataFiltered.map((activityItem) => (
-                        <React.Fragment key = {activityItem.useremail}>
-                            <tr>
-                                <td rowSpan = {activityItem.books.length}>{activityItem.user_id}</td>
-                                <td> <img src = {activityItem.books[0].bookImage} alt = {`${activityItem.books[0].bookName} cover`}/> </td>
-                                <td>{activityItem.books[0].bookName}</td>
-                                <td>{activityItem.books[0].dateRequested}</td>
-                                <td>{activityItem.books[0].approvalDate}</td>
-                                <td>{activityItem.books[0].approvalStatus}</td>
-                                <td>{activityItem.books[0].checkoutDate}</td>
-                                <td>{activityItem.books[0].returnDate}</td>
-                                <td>{(activityItem.books[0].actualReturnDate)? activityItem.books[0].actualReturnDate : null}</td>
-                            </tr>
-                            {activityItem.books.slice(1).map((book)=> (
-                                <tr key = {`${activityItem.user_id} - ${book.id}`}>
+                        activityItem.books.map((book)=> (
+                                <tr key = {book.id}> 
                                     <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
-                                    <td>{book.bookName}</td>
+                                    <td>{book.bookName}</td> 
                                     <td>{book.dateRequested}</td>
                                     <td>{book.approvalDate}</td>
                                     <td>{book.approvalStatus}</td>
@@ -135,8 +123,7 @@ const UserActivitiesPageAdmin = () => {
                                     <td>{book.returnDate}</td>
                                     <td>{(book.actualReturnDate)? book.actualReturnDate : null}</td>
                                 </tr>
-                            ))}
-                        </React.Fragment>
+                            ))
                     ))
                   ) : 
                     (

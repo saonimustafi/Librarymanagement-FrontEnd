@@ -1,0 +1,86 @@
+.activity-table-admin {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 50px;
+  }
+  
+  .activity-table-admin th,
+  .activity-table-admin td {
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  
+  .activity-table-admin th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .activity-table-admin td {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .activity-table-admin td img {
+    width: 80px;
+    height: auto;
+  }
+  
+  .activity-table-admin-header {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    text-align: center;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .activity-table-admin th,
+    .activity-table-admin td {
+      padding: 4px;
+      font-size: 12px;
+    }
+  
+    .activity-table-admin td img {
+      max-width: 80px;
+    }
+  }
+  
+  .activity-table-admin-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* flex-direction: column; */
+    margin: 0 auto;
+    max-width: 500px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 4px;
+  }
+  
+  .activity-table-admin-label {
+    font-weight: bold;
+  }
+
+  #userEmailInput {
+    width: 60%;
+  }
+  
+  .activity-table-admin-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  #myButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3e8e41;
+  }
