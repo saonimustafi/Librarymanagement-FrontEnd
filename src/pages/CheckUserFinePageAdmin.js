@@ -33,7 +33,6 @@ const Example = () => {
         catch(error) {
             console.error(error)
         }
-
     }
 
     useEffect(() => {
@@ -140,11 +139,10 @@ const Example = () => {
                                     )
                                 }
                             </tbody>
-                 
                 </table>
                 )
                 : (
-                errorMessage && <div className="error">{errorMessage}</div>
+                errorMessage && <div className="fine-table-error">{errorMessage}</div>
                 )
                 }    
             </div>

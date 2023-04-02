@@ -9,6 +9,7 @@ const UserActivitiesPageAdmin = () => {
     const [combinedDataFiltered, setCombinedDataFiltered] = useState(null)
     const [showTable, setShowTable] = useState(false)
     const [userID, setUserID] = useState(null)
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleShowActivity = async (event) => {
         event.preventDefault();
@@ -18,25 +19,25 @@ const UserActivitiesPageAdmin = () => {
             const userResponse = await fetch(`http://localhost:3004/users?email=${userEmail}`);
             const userData = await userResponse.json();
 
-            if(userData) {
+            if(userData && userData.length > 0) {
                 const user = (userData && userData.find(usr => usr.email === userEmail))? userData[0].id:""
-                if (user !== "")
+                if (user !== "") {
                     setUserID(user)
-                else {
-                    console.error("User does not exist")
+                    setShowTable(true);
                 }
             }
             else {
-                console.log("No user data present")
+                setErrorMessage("User not available")
+                setShowTable(false);
             } 
 
         }
         catch(error) {
             console.error(error)
+            setShowTable(false);
         }
-        setShowTable(true);
-        this.forceUpdate();
     }
+
         useEffect(() => {
             async function userActivities() {
                 try {
@@ -92,7 +93,7 @@ const UserActivitiesPageAdmin = () => {
 
           <div>
           
-          {showTable &&
+          {showTable ? (
           <table className = "activity-table-admin">
             <thead>
                 <tr>
@@ -135,9 +136,13 @@ const UserActivitiesPageAdmin = () => {
                         </tr>
                         )
                     )
+                    
                 }
             </tbody>
           </table>
+          ) : (
+            errorMessage && <div className="activity-table-error">{errorMessage}</div>
+          )
           }
         </div>
         </>
