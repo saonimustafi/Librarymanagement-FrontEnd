@@ -7,13 +7,11 @@ const UserActivitiesPageAdmin = () => {
     const [activity, setActivity] = useState(null)
     const [userBooks, setUserBooks] = useState(null)
     const [combinedDataFiltered, setCombinedDataFiltered] = useState(null)
-    // const [userEmail, setUserEmail] = useState("")
     const [showTable, setShowTable] = useState(false)
     const [userID, setUserID] = useState(null)
 
     const handleShowActivity = async (event) => {
         event.preventDefault();
-        // setUserEmail(event.target.value)
         
         try {
             const userEmail = event.target.elements.useremail.value;
@@ -84,7 +82,7 @@ const UserActivitiesPageAdmin = () => {
     return (
         <> 
         <div>
-        <h2 className = 'activity-table-admin-header'>Activity History</h2>
+            <h2 className = 'activity-table-admin-header'>Activity History</h2>
             <form className = 'activity-table-admin-form' onSubmit={handleShowActivity}>
                 <label className = 'activity-table-admin-label' htmlFor = "userEmail">User Name:</label>
                 <input type = "text" id = "userEmailInput" name="useremail"></input>
