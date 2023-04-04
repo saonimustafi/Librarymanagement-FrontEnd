@@ -82,7 +82,7 @@
     cursor: pointer;
   }
   
-  button:hover {
+  #myButton:hover {
     background-color: #3e8e41;
   }
 
@@ -92,3 +92,50 @@
     text-align: center;
     font-size: 20px;
   }
+  
+  .activity-table-admin button:active {
+    background-color: #205eba;
+  }
+
+  #approveButton:hover {
+    background-color: #3e8e41;
+  }
+  
+  #approveButton:active {
+    background-color: #4CAF50;
+  }
+
+  #rejectButton:hover {
+    background-color: #c5351c;
+  }
+  
+  #rejectButton:active {
+    background-color: #c5351c;
+  }
+
+  #approveButton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  #rejectButton {
+    background-color: #de5b4a; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+

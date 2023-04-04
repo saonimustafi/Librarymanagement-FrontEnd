@@ -18,7 +18,7 @@ function App() {
           <Route path="/register" element={<RegisterUserPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/books/:id" element={<BookDetailPage />} />
-          <Route path="/userActivities" element={<UserActivitiesPage />} />
+          <Route path="/userActivities/:user_id" element={<UserActivitiesPage />} />
           <Route path="/checkUserFine/:user_id" element={<CheckUserFinePage />}/>
           <Route path="/checkUserRequestBucket/:user_id" element={<UserRequestBucketPage />} />
           <Route path="/userActivitiesAdmin" element={<UserActivitiesPageAdmin />} />

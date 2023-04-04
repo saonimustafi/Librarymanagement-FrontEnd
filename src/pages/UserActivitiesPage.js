@@ -1,29 +1,32 @@
 import React, { useEffect, useState }  from 'react'
-// import { books } from '../data/books';
+import { useParams } from "react-router-dom";
 import './UserActivitiesPage.css';
 
 const UserActivitiesPage = () => {
     const [activity, setActivity] = useState(null)
     const [userBooks, setUserBooks] = useState(null)
+    const { user_id } = useParams()
     const [combinedDataFiltered, setCombinedDataFiltered] = useState(null)
 
     useEffect(() => {
         async function userActivities() {
             try {
-                const activityResponse = await fetch(`http://localhost:3004/userActivities`);
+                const activityResponse = await fetch(`http://localhost:3001/requests/${user_id}`);
                 const activityData = await activityResponse.json();
-                setActivity(activityData);
+                const activityDataArr = [activityData]
+                setActivity(activityDataArr);
 
-                const bookResponse = await fetch(`http://localhost:3004/books`);
+                const bookResponse = await fetch(`http://localhost:3001/books`);
                 const bookData = await bookResponse.json();
-                setUserBooks(bookData);
+                const bookDataArr = [bookData]
+                setUserBooks(bookDataArr);
             }
             catch(error) {
                 console.error(error)
             }
         }
         userActivities()
-    }, [])
+    }, [user_id])
 
 
     useEffect(() => {
@@ -34,11 +37,12 @@ const UserActivitiesPage = () => {
                 .map((activityItem) => ({
                     ...activityItem,
                     books: activityItem.books
-                    .filter(book => ((book.approvalStatus === "Approved" && book.checkoutDate !== "")||(book.approvalStatus === 'Declined')))
+                    .filter(book => ((book.approvalStatus === "Approved" && book.checkOutDate !== null)||(book.approvalStatus === 'Declined')))
                     .map((book) => ({
                         ...book,
-                        bookImage: (book && userBooks.find(b => b.title === book.bookName)) ? 
-                        userBooks.find(b => b.title === book.bookName).image : ''
+
+                        bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
+                        userBooks.find(b => b.title === book.title).image : ''
                     }))
                 }))
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
@@ -55,7 +59,6 @@ const UserActivitiesPage = () => {
           <table className="activity-table">
             <thead>
                 <tr>
-                    <th>User ID</th>
                     <th>Book Image</th>
                     <th>Book Name</th>
                     <th>Requested Date</th>
@@ -64,37 +67,26 @@ const UserActivitiesPage = () => {
                     <th>CheckOut Date</th>
                     <th>Return Date</th>
                     <th>Actual Return Date</th>
+                    <th>Comments</th>
                 </tr>
             </thead>
             <tbody>
                 {
                   combinedDataFiltered ? (
-                    combinedDataFiltered.map((activityItem) => (
-                        <React.Fragment key = {activityItem.user_id}>
-                            <tr>
-                                <td rowSpan = {activityItem.books.length}>{activityItem.user_id}</td>
-                                <td> <img src = {activityItem.books[0].bookImage} alt = {`${activityItem.books[0].bookName} cover`}/> </td>
-                                <td>{activityItem.books[0].bookName}</td>
-                                <td>{activityItem.books[0].dateRequested}</td>
-                                <td>{activityItem.books[0].approvalDate}</td>
-                                <td>{activityItem.books[0].approvalStatus}</td>
-                                <td>{activityItem.books[0].checkoutDate}</td>
-                                <td>{activityItem.books[0].returnDate}</td>
-                                <td>{(activityItem.books[0].actualReturnDate)? activityItem.books[0].actualReturnDate : null}</td>
-                            </tr>
-                            {activityItem.books.slice(1).map((book)=> (
-                                <tr key = {`${activityItem.user_id} - ${book.id}`}>
+                    combinedDataFiltered.map((activityItem) => (    
+                            activityItem.books.map((book)=> (
+                                <tr key = {book.book_id}>
                                     <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
-                                    <td>{book.bookName}</td>
-                                    <td>{book.dateRequested}</td>
-                                    <td>{book.approvalDate}</td>
+                                    <td>{book.title}</td>
+                                    <td>{book.requestDate}</td>
+                                    <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
-                                    <td>{book.checkoutDate}</td>
-                                    <td>{book.returnDate}</td>
-                                    <td>{(book.actualReturnDate)? book.actualReturnDate : null}</td>
+                                    <td>{(book.checkOutDate)? book.checkOutDate : "-"}</td>
+                                    <td>{(book.returnDate) ? book.returnDate : "-"}</td>
+                                    <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
+                                    <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>
-                            ))}
-                        </React.Fragment>
+                            ))
                     ))
                   ) : 
                     (

@@ -16,69 +16,103 @@ const UserActivitiesPageAdmin = () => {
         
         try {
             const userEmail = event.target.elements.useremail.value;
-            const userResponse = await fetch(`http://localhost:3004/users?email=${userEmail}`);
+            const userResponse = await fetch(`http://localhost:3001/users/searchemail/${userEmail}`);
             const userData = await userResponse.json();
 
-            if(userData && userData.length > 0) {
-                const user = (userData && userData.find(usr => usr.email === userEmail))? userData[0].id:""
-                if (user !== "") {
+            if(userData !== null) {
+                const user = userData.id
                     setUserID(user)
                     setShowTable(true);
-                }
             }
             else {
                 setErrorMessage("User not available")
                 setShowTable(false);
-            } 
-
+            }
         }
         catch(error) {
             console.error(error)
-            setShowTable(false);
         }
     }
 
-        useEffect(() => {
-            async function userActivities() {
-                try {
-
-                    const activityResponse = await fetch(`http://localhost:3004/userActivities?user_id=${userID}`);
-                    const activityData = await activityResponse.json();
-                    setActivity(activityData);
-
-                    const bookResponse = await fetch(`http://localhost:3004/books`);
-                    const bookData = await bookResponse.json();
-                    setUserBooks(bookData);
-                }
-                catch(error) {
-                    console.error(error)
-                }
-            }
-            userActivities()
-        }, [userID])
-
-        useEffect(() => {
-            function generateCombinedData() {
-                
-                if (activity && userBooks) {
-                    const combinedData = activity
-                    .map((activityItem) => ({
-                        ...activityItem,
-                        books: activityItem.books
-                        .map((book) => ({
-                            ...book,
-                            bookImage: (book && userBooks.find(b => b.title === book.bookName)) ? 
-                            userBooks.find(b => b.title === book.bookName).image : ''
-                        }))
-                    }))
-                    const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
-                    setCombinedDataFiltered(combinedDataModified)
-                }         
-            }
-            generateCombinedData()
-        },[activity, userBooks]);
     
+    useEffect(() => {
+        async function userActivities() {
+            try {
 
+                const activityResponse = await fetch(`http://localhost:3001/requests/${userID}`);
+                const activityData = await activityResponse.json();
+                const activityDataArr = [activityData]
+                setActivity(activityDataArr);
+    
+                const bookResponse = await fetch(`http://localhost:3001/books`);
+                const bookData = await bookResponse.json();
+                const bookDataArr = [bookData]
+                setUserBooks(bookDataArr);
+            }
+            catch(error) {
+                console.error(error)
+            }
+        }
+        userActivities()
+    }, [userID])
+
+
+    useEffect(() => {
+        function generateCombinedData() {
+            
+            if (activity && userBooks) {
+                const combinedData = activity
+                .map((activityItem) => ({
+                    ...activityItem,
+                    books: activityItem.books
+                    .map((book) => ({
+                        ...book,
+                        bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
+                        userBooks.find(b => b.title === book.title).image : ''
+                    }))
+                }))
+                const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
+                setCombinedDataFiltered(combinedDataModified)
+            }         
+        }
+        generateCombinedData()
+    },[activity, userBooks]);
+
+    const handleApprove = async(bookID) => {
+        try {
+            const response = await fetch(`http://localhost:3001/requests/approveindividualrequest/${userID}/${bookID}`, 
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                  }
+            })
+
+            const ResponseData = await response.json()
+            console.log("Request Approved")
+        }
+        catch(error) {
+            console.error(error)
+        }
+    }
+
+    const handleReject = async(bookID) => {
+        try {
+            const response = await fetch(`http://localhost:3001/requests/declineindividualrequest/${userID}/${bookID}`, 
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                  }
+            })
+
+            const ResponseData = await response.json()
+            console.log("Request Declined")
+        }
+        catch(error) {
+            console.error(error)
+        }
+    }
 
     return (
         <> 
@@ -105,6 +139,7 @@ const UserActivitiesPageAdmin = () => {
                     <th>CheckOut Date</th>
                     <th>Return Date</th>
                     <th>Actual Return Date</th>
+                    <th>Approve/Reject</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,15 +147,24 @@ const UserActivitiesPageAdmin = () => {
                   combinedDataFiltered ? (
                     combinedDataFiltered.map((activityItem) => (
                         activityItem.books.map((book)=> (
-                                <tr key = {book.id}> 
-                                    <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
-                                    <td>{book.bookName}</td> 
-                                    <td>{book.dateRequested}</td>
-                                    <td>{book.approvalDate}</td>
+                                <tr key = {book.book_id}> 
+                                    <td><img src = {book.bookImage} alt = {`${book.title} cover`}/></td>
+                                    <td>{book.title}</td> 
+                                    <td>{book.requestDate}</td>
+                                    <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
-                                    <td>{book.checkoutDate}</td>
-                                    <td>{book.returnDate}</td>
-                                    <td>{(book.actualReturnDate)? book.actualReturnDate : null}</td>
+                                    <td>{(book.checkOutDate)? book.checkOutDate : "-"}</td>
+                                    <td>{(book.returnDate) ? book.returnDate : "-"}</td>
+                                    <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
+                                    {
+                                       book.approvalStatus === 'Pending' ? (
+                                        <td>
+                                            <button id="approveButton" onClick={() => handleApprove(book.id)}>Approve</button>
+                                            <button id="rejectButton" onClick={() => handleReject(book.id)}>Decline</button>
+                                        </td>
+                                       ) :
+                                       (<td></td>)
+                                    }
                                 </tr>
                             ))
                     ))
@@ -136,7 +180,6 @@ const UserActivitiesPageAdmin = () => {
                         </tr>
                         )
                     )
-                    
                 }
             </tbody>
           </table>
