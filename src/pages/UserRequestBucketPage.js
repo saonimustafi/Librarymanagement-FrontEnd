@@ -23,7 +23,6 @@ const UserRequestBucketPage = () => {
                 const bookData = await bookResponse.json();
                 const bookDataArr = [bookData]
                 setUserBooks(bookDataArr);
-
             }
             catch(error) {
                 console.error(error)
@@ -68,8 +67,6 @@ const UserRequestBucketPage = () => {
                     <th>Approval Or Reject Date</th>
                     <th>Approval Status</th>
                     <th>CheckOut Date</th>
-                    {/* <th>Return Date</th> */}
-                    {/* <th>Actual Return Date</th> */}
                     <th>Comments</th>
                 </tr>
             </thead>
@@ -86,8 +83,6 @@ const UserRequestBucketPage = () => {
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
                                     <td>{(book.checkOutDate) ? book.checkOutDate : "-"}</td>
-                                    {/* <td>{(book.returnDate) ? book.returnDate : "-"}</td> */}
-                                    {/* <td>{(book.actualReturnDate) ? book.actualReturnDate : "-"}</td> */}
                                     <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>
                             ))

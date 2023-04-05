@@ -88,7 +88,7 @@ const UserActivitiesPage = () => {
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
                                     <td>{(book.checkOutDate)? book.checkOutDate : "-"}</td>
-                                    <td>{(book.returnDate) ? book.bookReturnDate : "-"}</td>
+                                    <td>{(book.bookReturnDate) ? book.bookReturnDate : "-"}</td>
                                     <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
                                     <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>
