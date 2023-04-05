@@ -14,11 +14,13 @@ const CheckUserFinePage = () => {
             // user_id is being passed as a query parameter here
             const activityListResponse = await fetch(`http://localhost:3004/userActivities?user_id=${user_id}`)
             const activityListData = await activityListResponse.json();
-            setUserActivityList(activityListData);
+            const activityListDataArr = [activityListData]
+            setUserActivityList(activityListDataArr);
 
             const bookResponse = await fetch("http://localhost:3004/books");
             const bookData = await bookResponse.json();
-            setUserBooks(bookData);
+            const bookDataArr = [bookData]
+            setUserBooks(bookDataArr);
             }
             catch(error) {
                 console.error(error)

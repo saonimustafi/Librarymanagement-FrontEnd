@@ -41,7 +41,7 @@ const UserRequestBucketPage = () => {
                 .map((activityItem) => ({
                     ...activityItem,
                     books: activityItem.books
-                    .filter(book => ((book.approvalStatus == 'Pending' || book.approvalStatus == 'Approved') && (book.checkoutDate == null)))
+                    .filter(book => ((book.approvalStatus === 'Pending' || book.approvalStatus === 'Approved') && (book.checkOutDate == null)))
                     .map((book) => ({
                         ...book,
                         bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
@@ -68,8 +68,8 @@ const UserRequestBucketPage = () => {
                     <th>Approval Or Reject Date</th>
                     <th>Approval Status</th>
                     <th>CheckOut Date</th>
-                    <th>Return Date</th>
-                    <th>Actual Return Date</th>
+                    {/* <th>Return Date</th> */}
+                    {/* <th>Actual Return Date</th> */}
                     <th>Comments</th>
                 </tr>
             </thead>
@@ -86,8 +86,8 @@ const UserRequestBucketPage = () => {
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
                                     <td>{(book.checkOutDate) ? book.checkOutDate : "-"}</td>
-                                    <td>{(book.returnDate) ? book.returnDate : "-"}</td>
-                                    <td>{(book.actualReturnDate) ? book.actualReturnDate : "-"}</td>
+                                    {/* <td>{(book.returnDate) ? book.returnDate : "-"}</td> */}
+                                    {/* <td>{(book.actualReturnDate) ? book.actualReturnDate : "-"}</td> */}
                                     <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>
                             ))

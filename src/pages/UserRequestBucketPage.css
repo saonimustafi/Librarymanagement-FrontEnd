@@ -1,6 +1,8 @@
 .request-table {
     border-collapse: collapse;
-    width: 100%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .request-table th, .request-table td {

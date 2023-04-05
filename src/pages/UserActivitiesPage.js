@@ -7,6 +7,7 @@ const UserActivitiesPage = () => {
     const [userBooks, setUserBooks] = useState(null)
     const { user_id } = useParams()
     const [combinedDataFiltered, setCombinedDataFiltered] = useState(null)
+    const [returnDateData, setReturnDateData] = useState(null)
 
     useEffect(() => {
         async function userActivities() {
@@ -20,6 +21,10 @@ const UserActivitiesPage = () => {
                 const bookData = await bookResponse.json();
                 const bookDataArr = [bookData]
                 setUserBooks(bookDataArr);
+
+                const responseCheckOut = await fetch(`http://localhost:3001/checkoutdetails/${user_id}`)
+                const responseCheckOutData = await responseCheckOut.json();
+                setReturnDateData(responseCheckOutData)
             }
             catch(error) {
                 console.error(error)
@@ -31,8 +36,7 @@ const UserActivitiesPage = () => {
 
     useEffect(() => {
         function generateCombinedData() {
-            
-            if (activity && userBooks) {
+            if (activity && userBooks && returnDateData) {
                 const combinedData = activity
                 .map((activityItem) => ({
                     ...activityItem,
@@ -42,16 +46,18 @@ const UserActivitiesPage = () => {
                         ...book,
 
                         bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
-                        userBooks.find(b => b.title === book.title).image : ''
+                        userBooks.find(b => b.title === book.title).image : '',
+
+                        bookReturnDate: (book && returnDateData[0].books.find(b => b.book_id === book.book_id)) ?
+                        returnDateData[0].books.find(b => b.book_id === book.book_id).returnDate : ''
                     }))
                 }))
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
                 setCombinedDataFiltered(combinedDataModified)
-            }         
+            }
         }
         generateCombinedData()
-    },[activity, userBooks])
-    
+    },[activity, userBooks, returnDateData])
      
     return (
         <div>
@@ -82,7 +88,7 @@ const UserActivitiesPage = () => {
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
                                     <td>{(book.checkOutDate)? book.checkOutDate : "-"}</td>
-                                    <td>{(book.returnDate) ? book.returnDate : "-"}</td>
+                                    <td>{(book.returnDate) ? book.bookReturnDate : "-"}</td>
                                     <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
                                     <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>

@@ -10,6 +10,9 @@ const UserActivitiesPageAdmin = () => {
     const [showTable, setShowTable] = useState(false)
     const [userID, setUserID] = useState(null)
     const [errorMessage, setErrorMessage] = useState("");
+    const[checkOutDate, setCheckOutDate] = useState("-");
+    const [returnDateData, setReturnDateData] = useState(null)
+    const [currentReturnDate, setCurrentReturnDate] = useState("-")
 
     const handleShowActivity = async (event) => {
         event.preventDefault();
@@ -19,14 +22,15 @@ const UserActivitiesPageAdmin = () => {
             const userResponse = await fetch(`http://localhost:3001/users/searchemail/${userEmail}`);
             const userData = await userResponse.json();
 
-            if(userData !== null) {
+            if(userResponse.status === 404) {
+                setErrorMessage("User not available")
+                setShowTable(false);
+            } 
+            
+            else if(userData !== null) {
                 const user = userData.id
                     setUserID(user)
                     setShowTable(true);
-            }
-            else {
-                setErrorMessage("User not available")
-                setShowTable(false);
             }
         }
         catch(error) {
@@ -48,6 +52,10 @@ const UserActivitiesPageAdmin = () => {
                 const bookData = await bookResponse.json();
                 const bookDataArr = [bookData]
                 setUserBooks(bookDataArr);
+
+                const responseCheckOut = await fetch(`http://localhost:3001/checkoutdetails/${userID}`)
+                const responseCheckOutData = await responseCheckOut.json();
+                setReturnDateData(responseCheckOutData)
             }
             catch(error) {
                 console.error(error)
@@ -56,27 +64,33 @@ const UserActivitiesPageAdmin = () => {
         userActivities()
     }, [userID])
 
-
+ 
     useEffect(() => {
         function generateCombinedData() {
             
-            if (activity && userBooks) {
+            if (activity && userBooks && returnDateData) {
                 const combinedData = activity
                 .map((activityItem) => ({
                     ...activityItem,
+
                     books: activityItem.books
                     .map((book) => ({
                         ...book,
+
                         bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
-                        userBooks.find(b => b.title === book.title).image : ''
+                        userBooks.find(b => b.title === book.title).image : '',
+
+                        bookReturnDate: (book && returnDateData[0].books.find(b => b.book_id === book.book_id)) ?
+                        returnDateData[0].books.find(b => b.book_id === book.book_id).returnDate : ''
                     }))
                 }))
+                
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
                 setCombinedDataFiltered(combinedDataModified)
             }         
         }
         generateCombinedData()
-    },[activity, userBooks]);
+    },[activity, userBooks, returnDateData]);
 
     const handleApprove = async(bookID) => {
         try {
@@ -89,7 +103,7 @@ const UserActivitiesPageAdmin = () => {
             })
 
             const ResponseData = await response.json()
-            console.log("Request Approved")
+            alert("Request Approved")
         }
         catch(error) {
             console.error(error)
@@ -107,7 +121,29 @@ const UserActivitiesPageAdmin = () => {
             })
 
             const ResponseData = await response.json()
-            console.log("Request Declined")
+            alert("Request Declined")
+        }
+        catch(error) {
+            console.error(error)
+        }
+    }
+
+    const handleCheckOut = async(bookID) => {
+        try {
+            const responseCheckOutDate = await fetch(`http://localhost:3001/checkout/${userID}/${bookID}`, 
+            {
+                method: 'PUT',
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+
+            const ResponseData = await responseCheckOutDate.json()
+            setCheckOutDate(ResponseData.checkOutDate)
+            setCurrentReturnDate(ResponseData.returnDate)
+
+            alert("Book checked out")
         }
         catch(error) {
             console.error(error)
@@ -139,7 +175,7 @@ const UserActivitiesPageAdmin = () => {
                     <th>CheckOut Date</th>
                     <th>Return Date</th>
                     <th>Actual Return Date</th>
-                    <th>Approve/Reject</th>
+                    <th>Approve/Reject/Check-Out</th>
                 </tr>
             </thead>
             <tbody>
@@ -153,18 +189,26 @@ const UserActivitiesPageAdmin = () => {
                                     <td>{book.requestDate}</td>
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
-                                    <td>{(book.checkOutDate)? book.checkOutDate : "-"}</td>
-                                    <td>{(book.returnDate) ? book.returnDate : "-"}</td>
+                                    <td>{(book.checkOutDate)? book.checkOutDate : checkOutDate}</td>
+                                    <td>{(book.bookReturnDate) ? book.bookReturnDate : currentReturnDate}</td>
                                     <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
-                                    {
+                                    <td>{
                                        book.approvalStatus === 'Pending' ? (
-                                        <td>
+                                        <>
                                             <button id="approveButton" onClick={() => handleApprove(book.id)}>Approve</button>
                                             <button id="rejectButton" onClick={() => handleReject(book.id)}>Decline</button>
-                                        </td>
-                                       ) :
-                                       (<td></td>)
+                                        </>
+                                        ) : 
+                                            book.approvalStatus === 'Approved' && book.checkOutDate === null ? (
+                                                <td>
+                                                    <button id="CheckoutButton" onClick={() => handleCheckOut(book.book_id)}>Checkout</button>
+                                                </td>
+                                            )    
+                                        : (
+                                            <td></td>
+                                            )
                                     }
+                                    </td>
                                 </tr>
                             ))
                     ))
@@ -191,5 +235,6 @@ const UserActivitiesPageAdmin = () => {
         </>
       );
 }
+
 
 export default UserActivitiesPageAdmin;
