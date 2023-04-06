@@ -4,7 +4,7 @@ import './CheckUserFinePage.css'
 
 const CheckUserFinePage = () => {
     const { user_id } = useParams()
-    const [userActivityList, setUserActivityList] = useState(null)
+    const [userFineList, setUserFineList] = useState(null)
     const [userBooks, setUserBooks] = useState(null)
     const [combinedData, setCombinedData] = useState(null)
 
@@ -12,12 +12,12 @@ const CheckUserFinePage = () => {
         async function fetchDetails() {
             try {
             // user_id is being passed as a query parameter here
-            const activityListResponse = await fetch(`http://localhost:3004/userActivities?user_id=${user_id}`)
-            const activityListData = await activityListResponse.json();
-            const activityListDataArr = [activityListData]
-            setUserActivityList(activityListDataArr);
+            const userFineResponse = await fetch(`http://localhost:3001/getfinedetails/${user_id}`)
+            const userFineData = await userFineResponse.json();
+            const userFineDataArr = [userFineData]
+            setUserFineList(userFineDataArr);
 
-            const bookResponse = await fetch("http://localhost:3004/books");
+            const bookResponse = await fetch("http://localhost:3001/books");
             const bookData = await bookResponse.json();
             const bookDataArr = [bookData]
             setUserBooks(bookDataArr);
@@ -32,20 +32,21 @@ const CheckUserFinePage = () => {
     useEffect(() => {
         function generateCombinedData() {
 
-            if(userActivityList && userBooks)  {
+            if(userFineList && userBooks)  {
                 const combinedDatagenerated = 
-                userActivityList.map((activityListItem) => ({
-                    ...activityListItem,
-                    books: activityListItem.books.map((book) => ({
+                userFineList[0].map((fineListItem) => ({
+                    ...fineListItem,
+                    books: fineListItem.booksBorrowed.map((book) => ({
                         ...book,
-                        bookImage: userBooks.find(b => b.title === book.bookName)?.image || ''}))
+                        bookImage: userBooks[0].find(b => b.id === book.book_id)?.image || '',
+                        bookName: userBooks[0].find(b => b.id === book.book_id)?.title || ''}))
                     }))
                     setCombinedData(combinedDatagenerated)
             }
         }
         generateCombinedData()
     }
-    , [userActivityList, userBooks]
+    , [userFineList, userBooks]
     )
 
     return(
@@ -54,38 +55,30 @@ const CheckUserFinePage = () => {
             <table className="fine-table">
                 <thead>
                     <tr>
-                        <th>User ID</th>
                         <th>Book Image</th>
                         <th>Book Name</th>
                         <th>Return Date</th>
                         <th>Actual Return Date</th>
+                        <th>Fine Paid</th>
                         <th colSpan="9">Fine</th>
                     </tr>
                     </thead>
                         <tbody>
                             {
                                combinedData ? 
-                               ( combinedData.map((activityListItem) => (
-                                    <React.Fragment key={activityListItem.user_id}>
-                                        <tr>
-                                            <td rowSpan={activityListItem.books.length}>{activityListItem.user_id}</td>
-                                            <td><img src = {activityListItem.books[0].bookImage} alt = {`${activityListItem.books[0].bookName} cover`} /></td>
-                                            <td>{activityListItem.books[0].bookName}</td>
-                                            <td>{activityListItem.books[0].returnDate}</td>
-                                            <td>{activityListItem.books[0].actualReturnDate ? activityListItem.books[0].actualReturnDate : null}</td>
-                                            <td colSpan="9">{activityListItem.books[0].fineToPay}</td>
-                                        </tr>
-                                    
-                                        {activityListItem.books.slice(1).map((book) => (
-                                            <tr key = {`${activityListItem.user_id} - ${book.id}`}>
-                                                <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
-                                                <td>{book.bookName}</td>
-                                                <td>{book.returnDate}</td>
-                                                <td>{book.actualReturnDate}</td>
-                                                <td colSpan="9">{book.fineToPay}</td>
-                                            </tr>
-                                        ))}
-                                    </React.Fragment>
+                               ( combinedData.map((fineListItem) => (
+                                        fineListItem.booksBorrowed.map((book) => 
+                                            book.fineToPay > 0 ? (
+                                                <tr key = {`${book.id}`}>
+                                                    <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
+                                                    <td>{book.bookName}</td>
+                                                    <td>{book.returnDate}</td>
+                                                    <td>{book.actualReturnDate}</td>
+                                                    <td>{book.finePaid === Boolean(true)? "Yes":"No"}</td>
+                                                    <td colSpan="9">{book.fineToPay}</td>
+                                                </tr>
+                                                ) : null
+                                            )
                                ))) :
                                 (
                                 <tr>
@@ -95,18 +88,25 @@ const CheckUserFinePage = () => {
                             }
                             {
                                 combinedData && (
-                                    <tr>
-                                        <td id="fine-table-total-fine" colSpan="8">Total Fine</td>
-                                        <td>
-                                            {
                                                 combinedData
                                                 .flatMap((activityItem) => activityItem.books)
-                                                .reduce((totalFine, book) => totalFine + (book.fineToPay || 0),0)
-                                            }
-                                        </td>
-                                    </tr>
-                                )
-                            }
+                                                .reduce((totalFine, book) => totalFine + (book.fineToPay || 0),0) > 0 ? (
+                                                    <tr>
+                                                        <td id="fine-table-total-fine" colSpan="8">
+                                                            Total Fine
+                                                        </td>
+                                                        <td>
+                                                        {combinedData
+                                                            .flatMap((activityItem) => activityItem.books)
+                                                            .reduce((totalFine, book) => totalFine + (book.fineToPay || 0), 0)}
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="8">No Fines due</td>
+                                                    </tr>
+                                                )
+                                )}                  
                         </tbody>  
             </table>
         </div>
