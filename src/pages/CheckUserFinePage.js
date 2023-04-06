@@ -98,7 +98,13 @@ const CheckUserFinePage = () => {
                                                         <td>
                                                         {combinedData
                                                             .flatMap((activityItem) => activityItem.books)
-                                                            .reduce((totalFine, book) => totalFine + (book.fineToPay || 0), 0)}
+                                                            .reduce((totalFine, book) => {
+                                                                if (!book.finePaid) {
+                                                                    return totalFine + book.fineToPay
+                                                                }
+                                                                return totalFine;
+                                                            },0)
+                                                        }
                                                         </td>
                                                     </tr>
                                                 ) : (
