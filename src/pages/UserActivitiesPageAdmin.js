@@ -68,7 +68,7 @@ const UserActivitiesPageAdmin = () => {
     useEffect(() => {
         function generateCombinedData() {
             
-            if (activity && userBooks && returnDateData) {
+            if (activity && userBooks) {
                 const combinedData = activity
                 .map((activityItem) => ({
                     ...activityItem,
@@ -79,15 +79,16 @@ const UserActivitiesPageAdmin = () => {
 
                         bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
                         userBooks.find(b => b.title === book.title).image : '',
+                        
+                        bookReturnDate: (book && returnDateData?.[0]?.books.find(b => b.book_id === book.book_id)?.returnDate) ?? '',
 
-                        bookReturnDate: (book && returnDateData[0].books.find(b => b.book_id === book.book_id)) ?
-                        returnDateData[0].books.find(b => b.book_id === book.book_id).returnDate : ''
+                        bookActualReturnDate: (book && returnDateData?.[0]?.books.find(b => b.book_id === book.book_id)?.actualReturnDate) ?? ''
                     }))
                 }))
-                
+
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
                 setCombinedDataFiltered(combinedDataModified)
-            }         
+            }
         }
         generateCombinedData()
     },[activity, userBooks, returnDateData]);
@@ -191,7 +192,7 @@ const UserActivitiesPageAdmin = () => {
                                     <td>{book.approvalStatus}</td>
                                     <td>{(book.checkOutDate)? book.checkOutDate : checkOutDate}</td>
                                     <td>{(book.bookReturnDate) ? book.bookReturnDate : currentReturnDate}</td>
-                                    <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
+                                    <td>{(book.bookActualReturnDate)? book.bookActualReturnDate : "-"}</td>
                                     <td>{
                                        book.approvalStatus === 'Pending' ? (
                                         <>
