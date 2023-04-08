@@ -10,9 +10,13 @@ const UserActivitiesPageAdmin = () => {
     const [showTable, setShowTable] = useState(false)
     const [userID, setUserID] = useState(null)
     const [errorMessage, setErrorMessage] = useState("");
-    const[checkOutDate, setCheckOutDate] = useState("-");
+    // const[checkOutDate, setCheckOutDate] = useState("-");
     const [returnDateData, setReturnDateData] = useState(null)
-    const [currentReturnDate, setCurrentReturnDate] = useState("-")
+    const [currentReturnDates, setCurrentReturnDates] = useState("-")
+    const [checkoutDates, setCheckoutDates] = useState({});
+    const [approvalDates, setApprovalDates] = useState({});
+    const [rejectDates, setRejectDates] = useState({});
+    const [actualReturnDates, setActualReturnDates] = useState({})
 
     const handleShowActivity = async (event) => {
         event.preventDefault();
@@ -93,6 +97,8 @@ const UserActivitiesPageAdmin = () => {
         generateCombinedData()
     },[activity, userBooks, returnDateData]);
 
+
+
     const handleApprove = async(bookID) => {
         try {
             const response = await fetch(`http://localhost:3001/requests/approveindividualrequest/${userID}/${bookID}`, 
@@ -104,12 +110,17 @@ const UserActivitiesPageAdmin = () => {
             })
 
             const ResponseData = await response.json()
+            const newApprovalDates = {...approvalDates, [bookID]: ResponseData.approvalDate}
+            setApprovalDates(newApprovalDates)
+
             alert("Request Approved")
         }
         catch(error) {
             console.error(error)
         }
     }
+
+
 
     const handleReject = async(bookID) => {
         try {
@@ -122,12 +133,16 @@ const UserActivitiesPageAdmin = () => {
             })
 
             const ResponseData = await response.json()
+            const newRejectDates = {...rejectDates, [bookID]: ResponseData.rejectDate}
+            setRejectDates(newRejectDates)
             alert("Request Declined")
         }
         catch(error) {
             console.error(error)
         }
     }
+
+
 
     const handleCheckOut = async(bookID) => {
         try {
@@ -141,8 +156,36 @@ const UserActivitiesPageAdmin = () => {
 
 
             const ResponseData = await responseCheckOutDate.json()
-            setCheckOutDate(ResponseData.checkOutDate)
-            setCurrentReturnDate(ResponseData.returnDate)
+            
+            const newCheckoutDates = {...checkoutDates, [bookID]: ResponseData.checkOutDate}
+            setCheckoutDates(newCheckoutDates)
+
+            const newReturnDates = {...currentReturnDates, [bookID]: ResponseData.returnDate}
+            setCurrentReturnDates(newReturnDates)
+
+            alert("Book checked out")
+        }
+        catch(error) {
+            console.error(error)
+        }
+    }
+
+
+    const handleReturn = async(bookID) => {
+        try {
+            const responseActualReturnDate = await fetch(`http://localhost:3001/return/${userID}/${bookID}`, 
+            {
+                method: 'PUT',
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+
+            const ResponseData = await responseActualReturnDate.json()
+            
+            const newActualReturnDates = {...actualReturnDates, [bookID]: ResponseData.actualReturnDate}
+            setActualReturnDates(newActualReturnDates)
 
             alert("Book checked out")
         }
@@ -176,7 +219,7 @@ const UserActivitiesPageAdmin = () => {
                     <th>CheckOut Date</th>
                     <th>Return Date</th>
                     <th>Actual Return Date</th>
-                    <th>Approve/Reject/Check-Out</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -190,9 +233,9 @@ const UserActivitiesPageAdmin = () => {
                                     <td>{book.requestDate}</td>
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
                                     <td>{book.approvalStatus}</td>
-                                    <td>{(book.checkOutDate)? book.checkOutDate : checkOutDate}</td>
-                                    <td>{(book.bookReturnDate) ? book.bookReturnDate : currentReturnDate}</td>
-                                    <td>{(book.bookActualReturnDate)? book.bookActualReturnDate : "-"}</td>
+                                    <td>{(book.checkOutDate)? book.checkOutDate : (checkoutDates[book.book_id] ? checkoutDates[book.book_id] : "-")}</td>
+                                    <td>{(book.bookReturnDate) ? book.bookReturnDate : (currentReturnDates[book.book_id] ? currentReturnDates[book.book_id] : "-")}</td>
+                                    <td>{(book.bookActualReturnDate)? book.bookActualReturnDate : (actualReturnDates[book.book_id] ? actualReturnDates[book.book_id] : "-")}</td>
                                     <td>{
                                        book.approvalStatus === 'Pending' ? (
                                         <>
@@ -205,7 +248,12 @@ const UserActivitiesPageAdmin = () => {
                                                     <button id="CheckoutButton" onClick={() => handleCheckOut(book.book_id)}>Checkout</button>
                                                 </td>
                                             )    
-                                        : (
+                                        : book.checkOutDate && !book.bookActualReturnDate ? (
+                                            <td>
+                                                <button id="ReturnButton" onClick={() => handleReturn(book.book_id)}>Return</button>
+                                            </td>
+                                            ) : 
+                                        (
                                             <td></td>
                                             )
                                     }
