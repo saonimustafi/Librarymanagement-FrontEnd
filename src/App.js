@@ -6,9 +6,7 @@ import RegisterUserPage from './pages/RegisterUserPage';
 import UserActivitiesPage from './pages/UserActivitiesPage';
 import CheckUserFinePage from './pages/CheckUserFinePage';
 import UserRequestBucketPage from './pages/UserRequestBucketPage';
-import UserActivitiesPageAdmin from './pages/UserActivitiesPageAdmin';
-import CheckUserFinePageAdmin from './pages/CheckUserFinePageAdmin';
-
+import SignInPage from './pages/SignInPage';
 
 function App() {
   return (
@@ -17,13 +15,12 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterUserPage />} />
+          <Route path="/login" element={<SignInPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/books/:id" element={<BookDetailPage />} />
           <Route path="/userActivities/:user_id" element={<UserActivitiesPage />} />
           <Route path="/checkUserFine/:user_id" element={<CheckUserFinePage />}/>
-          <Route path="/checkUserRequestBucket/:user_id" element={<UserRequestBucketPage />} />
-          <Route path="/userActivitiesAdmin" element={<UserActivitiesPageAdmin />} />
-          <Route path="/checkUserFineAdmin" element={<CheckUserFinePageAdmin />} />
+          <Route path="/checkUserRequestBucket/:user_id" element={<UserRequestBucketPage />} />          
         </Routes>
       </div>
     </Router>
