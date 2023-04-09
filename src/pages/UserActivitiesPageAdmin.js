@@ -10,15 +10,14 @@ const UserActivitiesPageAdmin = () => {
     const [showTable, setShowTable] = useState(false)
     const [userID, setUserID] = useState(null)
     const [errorMessage, setErrorMessage] = useState("");
-    // const[checkOutDate, setCheckOutDate] = useState("-");
     const [returnDateData, setReturnDateData] = useState(null)
     const [currentReturnDates, setCurrentReturnDates] = useState("-")
     const [checkoutDates, setCheckoutDates] = useState({});
     const [approvalRejectionDates, setApprovalRejectionDates] = useState({});
-    // const [rejectDates, setRejectDates] = useState({});
     const [actualReturnDates, setActualReturnDates] = useState({})
     const [approvalStatuses, setApprovalStatuses] = useState({})
 
+   
     const handleShowActivity = async (event) => {
         event.preventDefault();
         
@@ -111,11 +110,12 @@ const UserActivitiesPageAdmin = () => {
             })
 
             const ResponseData = await response.json()
-            const newApprovalDates = {...approvalRejectionDates, [bookID]: ResponseData.approvalDate}
-            setApprovalRejectionDates(newApprovalDates)
 
-            // const newApprovalStatuses = {...approvalStatuses, [bookID]: ResponseData.approvalStatus}
-            // setApprovalStatuses(newApprovalStatuses)
+            const newApprovalDates = {...approvalRejectionDates, [bookID]: ResponseData.approvalDate}
+            await setApprovalRejectionDates(newApprovalDates)
+
+            const newApprovalStatuses = {...approvalStatuses, [bookID]: ResponseData.approvalStatus}
+            await setApprovalStatuses(newApprovalStatuses)
 
             alert("Request Approved")
         }
@@ -124,28 +124,28 @@ const UserActivitiesPageAdmin = () => {
         }
     }
 
-    useEffect(() => {
-        const updateApprovalStatuses = async(bookID) => {
-          try {
-            const response = await fetch(`http://localhost:3001/requests/${userID}/${bookID}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
+    // useEffect(() => {
+    //     const updateApprovalStatuses = async(bookID) => {
+    //       try {
+    //         const response = await fetch(`http://localhost:3001/checkoutdetails/${userID}`, {
+    //           method: 'GET',
+    //           headers: {
+    //             'Content-Type': 'application/json'
+    //           }
+    //         });
       
-            const responseData = await response.json();
-            const newApprovalStatuses = {...approvalStatuses, [bookID]: responseData.approvalStatus};
-            setApprovalStatuses(newApprovalStatuses);
-          } catch(error) {
-            console.error(error);
-          }
-        };
+    //         const responseData = await response.json();
+    //         const newApprovalStatuses = {...approvalStatuses, [bookID]: responseData.approvalStatus};
+    //         setApprovalStatuses(newApprovalStatuses);
+    //       } catch(error) {
+    //         console.error(error);
+    //       }
+    //     };
       
-        for (const bookID in approvalRejectionDates) {
-          updateApprovalStatuses(bookID);
-        }
-      }, [approvalRejectionDates, userID, approvalStatuses]);
+    //     // for (bookID in approvalRejectionDates) {
+    //     //   updateApprovalStatuses(bookID);
+    //     // approvalRejectionDates,}
+    // }, [ userID, approvalStatuses]);
 
 
     const handleReject = async(bookID) => {
@@ -225,6 +225,28 @@ const UserActivitiesPageAdmin = () => {
         }
     }
 
+    const handleRenew = async(bookID) => {
+        try {
+            const responseRenewDate = await fetch(`http://localhost:3001/activities/renew/${userID}/${bookID}`, 
+            {
+                method: 'PUT',
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const ResponseData = await responseRenewDate.json()
+            const newReturnDates = {...currentReturnDates, [bookID]: ResponseData.newReturnDate}
+            setCurrentReturnDates(newReturnDates)
+
+            alert("Book renewed")
+            }
+
+        catch(error) {
+            console.error(error)
+        }
+    }
+
     return (
         <> 
         <div>
@@ -268,11 +290,11 @@ const UserActivitiesPageAdmin = () => {
 
                                     <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : (approvalRejectionDates[book.book_id] ? new Date(approvalRejectionDates[book.book_id]).toISOString() : "-")}</td>
 
-                                    <td>{(book.approvalStatus) ? book.approvalStatus : (approvalStatuses[book.book_id] ? approvalStatuses[book.book_id] : "-")}</td>
+                                    <td>{approvalStatuses[book.book_id] ? approvalStatuses[book.book_id] : ((book.approvalStatus)? book.approvalStatus : "-")}</td>
 
                                     <td>{(book.checkOutDate)? book.checkOutDate : (checkoutDates[book.book_id] ? new Date(checkoutDates[book.book_id]).toISOString() : "-")}</td>
 
-                                    <td>{(book.bookReturnDate) ? book.bookReturnDate : (currentReturnDates[book.book_id] ? new Date(currentReturnDates[book.book_id]).toISOString() : "-")}</td>
+                                    <td>{currentReturnDates[book.book_id] ? new Date(currentReturnDates[book.book_id]).toISOString() : (book.bookReturnDate? book.bookReturnDate : "-")}</td>
 
                                     <td>{(book.bookActualReturnDate)? book.bookActualReturnDate : (actualReturnDates[book.book_id] ? new Date(actualReturnDates[book.book_id]).toISOString() : "-")}</td>
 
@@ -285,12 +307,13 @@ const UserActivitiesPageAdmin = () => {
                                         ) : 
                                             book.approvalStatus === 'Approved' && book.checkOutDate === null ? (
                                                 <td>
-                                                    <button id="CheckoutButton" onClick={() => handleCheckOut(book.book_id)}>Checkout</button>
+                                                    <button id="checkoutButton" onClick={() => handleCheckOut(book.book_id)}>Checkout</button>
                                                 </td>
                                             )    
                                         : book.checkOutDate && !book.bookActualReturnDate ? (
                                             <td>
-                                                <button id="ReturnButton" onClick={() => handleReturn(book.book_id)}>Return</button>
+                                                <button id="returnButton" onClick={() => handleReturn(book.book_id)}>Return</button>
+                                                <button id="renewButton" onClick={() => handleRenew(book.book_id)}>Renew</button>
                                             </td>
                                             ) : 
                                         (
@@ -322,7 +345,7 @@ const UserActivitiesPageAdmin = () => {
           }
         </div>
         </>
-      );
+    );
 }
 
 

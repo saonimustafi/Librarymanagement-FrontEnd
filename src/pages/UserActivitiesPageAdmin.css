@@ -115,20 +115,28 @@
     background-color: #c5351c;
   }
 
-  #CheckoutButton:active {
+  #checkoutButton:active {
     background-color:  #205eba;
   }
 
-  #CheckoutButton:hover {
+  #checkoutButton:hover {
     background-color: #04307c;
   }
   
-  #ReturnButton:hover {
+  #returnButton:hover {
     background-color: #ecd313;
   }
 
-  #ReturnButton:active {
-    background-color:  #baa711;
+  #returnButton:active {
+    background-color:  #908428;
+  }
+
+  #renewButton:active {
+    background-color: #09dcf4;
+  }
+
+  #renewButton:hover {
+    background-color: #1a8a96;
   }
 
   #approveButton {
@@ -157,7 +165,7 @@
     cursor: pointer;
   }
 
-  #CheckoutButton {
+  #checkoutButton {
     background-color: #537fef; /* Blue */
     border: none;
     color: white;
@@ -170,8 +178,21 @@
     cursor: pointer;
   }
 
-  #ReturnButton {
+  #returnButton {
     background-color: #ecd313;
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  #renewButton {
+    background-color: #09dcf4;
     border: none;
     color: white;
     padding: 10px 18px;
