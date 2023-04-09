@@ -9,7 +9,7 @@ function BookDetailPage() {
   useEffect(() => {
     async function fetchBook() {
       try {
-        const response = await fetch(`http://localhost:3001/books/${id}`);
+        const response = await fetch(`http://localhost:3000/books/${id}`);
         const data = await response.json();
         setBook(data);
       } catch (error) {

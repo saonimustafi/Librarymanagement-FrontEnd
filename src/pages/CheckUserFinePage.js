@@ -12,12 +12,12 @@ const CheckUserFinePage = () => {
         async function fetchDetails() {
             try {
             // user_id is being passed as a query parameter here
-            const userFineResponse = await fetch(`http://localhost:3001/getfinedetails/${user_id}`)
+            const userFineResponse = await fetch(`http://localhost:3000/getfinedetails/${user_id}`)
             const userFineData = await userFineResponse.json();
             const userFineDataArr = [userFineData]
             setUserFineList(userFineDataArr);
 
-            const bookResponse = await fetch("http://localhost:3001/books");
+            const bookResponse = await fetch("http://localhost:3000/books");
             const bookData = await bookResponse.json();
             const bookDataArr = [bookData]
             setUserBooks(bookDataArr);

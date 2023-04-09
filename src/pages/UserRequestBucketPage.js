@@ -14,12 +14,12 @@ const UserRequestBucketPage = () => {
     useEffect(() => {
         async function userActivities() {
             try {
-                const activityResponse = await fetch(`http://localhost:3001/requests/${user_id}`);
+                const activityResponse = await fetch(`http://localhost:3000/requests/${user_id}`);
                 const activityData = await activityResponse.json();
                 const activityDataArr = [activityData]
                 setActivity(activityDataArr);
 
-                const bookResponse = await fetch(`http://localhost:3001/books`);
+                const bookResponse = await fetch(`http://localhost:3000/books`);
                 const bookData = await bookResponse.json();
                 const bookDataArr = [bookData]
                 setUserBooks(bookDataArr);

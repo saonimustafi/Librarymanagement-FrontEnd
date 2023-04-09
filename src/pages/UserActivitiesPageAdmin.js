@@ -23,7 +23,7 @@ const UserActivitiesPageAdmin = () => {
         
         try {
             const userEmail = event.target.elements.useremail.value;
-            const userResponse = await fetch(`http://localhost:3001/users/searchemail/${userEmail}`);
+            const userResponse = await fetch(`http://localhost:3000/users/searchemail/${userEmail}`);
             const userData = await userResponse.json();
 
             if(userResponse.status === 404) {
@@ -47,17 +47,17 @@ const UserActivitiesPageAdmin = () => {
         async function userActivities() {
             try {
 
-                const activityResponse = await fetch(`http://localhost:3001/requests/${userID}`);
+                const activityResponse = await fetch(`http://localhost:3000/requests/${userID}`);
                 const activityData = await activityResponse.json();
                 const activityDataArr = [activityData]
                 setActivity(activityDataArr);
     
-                const bookResponse = await fetch(`http://localhost:3001/books`);
+                const bookResponse = await fetch(`http://localhost:3000/books`);
                 const bookData = await bookResponse.json();
                 const bookDataArr = [bookData]
                 setUserBooks(bookDataArr);
 
-                const responseCheckOut = await fetch(`http://localhost:3001/checkoutdetails/${userID}`)
+                const responseCheckOut = await fetch(`http://localhost:3000/checkoutdetails/${userID}`)
                 const responseCheckOutData = await responseCheckOut.json();
                 setReturnDateData(responseCheckOutData)
             }
@@ -101,7 +101,7 @@ const UserActivitiesPageAdmin = () => {
 
     const handleApprove = async(bookID) => {
         try {
-            const response = await fetch(`http://localhost:3001/requests/approveindividualrequest/${userID}/${bookID}`, 
+            const response = await fetch(`http://localhost:3000/requests/approveindividualrequest/${userID}/${bookID}`,
             {
                 method: 'PUT',
                 headers: {
@@ -127,7 +127,7 @@ const UserActivitiesPageAdmin = () => {
     // useEffect(() => {
     //     const updateApprovalStatuses = async(bookID) => {
     //       try {
-    //         const response = await fetch(`http://localhost:3001/checkoutdetails/${userID}`, {
+    //         const response = await fetch(`http://localhost:3000/checkoutdetails/${userID}`, {
     //           method: 'GET',
     //           headers: {
     //             'Content-Type': 'application/json'
@@ -150,7 +150,7 @@ const UserActivitiesPageAdmin = () => {
 
     const handleReject = async(bookID) => {
         try {
-            const response = await fetch(`http://localhost:3001/requests/declineindividualrequest/${userID}/${bookID}`, 
+            const response = await fetch(`http://localhost:3000/requests/declineindividualrequest/${userID}/${bookID}`,
             {
                 method: 'PUT',
                 headers: {
@@ -177,7 +177,7 @@ const UserActivitiesPageAdmin = () => {
 
     const handleCheckOut = async(bookID) => {
         try {
-            const responseCheckOutDate = await fetch(`http://localhost:3001/checkout/${userID}/${bookID}`, 
+            const responseCheckOutDate = await fetch(`http://localhost:3000/checkout/${userID}/${bookID}`,
             {
                 method: 'PUT',
                 header: {
@@ -204,7 +204,7 @@ const UserActivitiesPageAdmin = () => {
 
     const handleReturn = async(bookID) => {
         try {
-            const responseActualReturnDate = await fetch(`http://localhost:3001/return/${userID}/${bookID}`, 
+            const responseActualReturnDate = await fetch(`http://localhost:3000/return/${userID}/${bookID}`,
             {
                 method: 'PUT',
                 header: {
@@ -227,7 +227,7 @@ const UserActivitiesPageAdmin = () => {
 
     const handleRenew = async(bookID) => {
         try {
-            const responseRenewDate = await fetch(`http://localhost:3001/activities/renew/${userID}/${bookID}`, 
+            const responseRenewDate = await fetch(`http://localhost:3000/activities/renew/${userID}/${bookID}`,
             {
                 method: 'PUT',
                 header: {

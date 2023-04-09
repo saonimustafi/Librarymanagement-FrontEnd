@@ -8,7 +8,7 @@ function Book({ book }) {
 
   const requestBook = async () => {
     try {
-      const response = await fetch('http://localhost:3001/books', {
+      const response = await fetch('http://localhost:3000/books', {
         method: 'POST',
       });
       if (response.ok) {
@@ -27,7 +27,7 @@ function Book({ book }) {
 
   const deleteRequest = async () => {
     try {
-      const response = await fetch('http://localhost:3001/books', {
+      const response = await fetch('http://localhost:3000/books', {
         method: 'POST',
       });
       if (response.ok) {
