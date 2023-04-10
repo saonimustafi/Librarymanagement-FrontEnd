@@ -107,7 +107,7 @@
     border-radius: 4px;
   }
   
-  .user-dropdown-item {
+  /* .user-dropdown-item {
     display: block;
     width: 100%;
     padding: 8px 20px;
@@ -120,10 +120,11 @@
     border: 0;
     border-radius: 0;
     transition: background-color 0.3s ease-in-out;
-  }
+  } */
   
   .user-dropdown-item:hover {
-    background-color: #f5f5f5;
+    background-color: #f6f6c5;
+    cursor: pointer;
   }  
   
 .user-dropdown-container {
