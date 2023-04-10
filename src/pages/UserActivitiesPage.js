@@ -1,6 +1,7 @@
 import React, { useEffect, useState }  from 'react'
 import { useParams } from "react-router-dom";
 import './UserActivitiesPage.css';
+import TopNav from '../components/TopNav';
 
 const UserActivitiesPage = () => {
     const [activity, setActivity] = useState(null)
@@ -61,6 +62,7 @@ const UserActivitiesPage = () => {
      
     return (
         <div>
+            <TopNav />
           <h2 className='activity-table-header'>Activity History</h2>
           <table className="activity-table">
             <thead>
