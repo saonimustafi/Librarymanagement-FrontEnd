@@ -11,7 +11,7 @@ function LoginUser() {
     event.preventDefault();
     // Handle form submission logic here
     
-    const response = await fetch('http://127.0.0.1:3000/login', {
+    const response = await fetch('http://127.0.0.1:3000/users/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

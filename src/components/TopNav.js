@@ -64,25 +64,28 @@ function TopNav() {
         <img src={LOGO_IMG_URL} alt="Company logo" className="logo" />
       </Link>
       <Link to="/" className="company-name">Library Portal</Link>
-      <ul className="menu">
+      {/* <ul className="menu">
         <li className="menu-item">
           <Link to="/categories" className="menu-link">Categories</Link>
         </li>
         <li className="menu-item">
           <Link to="/contact-us" className="menu-link">Contact us</Link>
         </li>
-      </ul>
+      </ul> */}
 
       {isLoggedIn ? (
         // <p>Hello, {userEmail}!</p>
 
           <div className="user-dropdown-container">
-          <button className="user-dropdown-button" onClick={handleDropdown}>
+          <Link to="#" className="user-dropdown-link" onClick={handleDropdown}>
             <p>Hello, {currentUser.name}</p>
-          </button>
+          </Link>
           {showDropdown && (
             <div className="user-dropdown-content">
-              <a href="#">Profile Settings</a>
+              {/* <a href="/userActivities/{currentUser.id}">Activity history</a> */}
+              <Link to={`/userActivities/${currentUser.id}`}>Activity history</Link>
+              <Link to={`/checkUserFine/${currentUser.id}`}>Fines (if any)</Link>
+              <Link to={`/checkUserRequestBucket/${currentUser.id}`}>Request bucket</Link>
               <a href="#" onClick={handleLogout}>Log out</a>
               {/* <button onClick={handleLogout}>Log out</button> */}
             </div>
