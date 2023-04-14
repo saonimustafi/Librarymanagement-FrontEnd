@@ -1,0 +1,75 @@
+.sign-in-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+  }
+  
+  .sign-in-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -50px;
+  }
+  
+  .sign-in-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .sign-in-heading {
+    font-size: 24px;
+    margin: 0 0 20px 0;
+  }
+  
+  .sign-in-label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .sign-in-input {
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .sign-in-button {
+    padding: 10px 20px;
+    background-color: #0077cc;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100px;
+  }
+  
+  .sign-in-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    max-width: 400px;
+    width: 80%
+    /* flex-direction: column;
+    align-items: flex-start; */
+  }
+  

@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 30px;
-    background-color: #fff;
+    background-color: #ffffe0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
@@ -25,6 +25,7 @@
     letter-spacing: 1px;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
     text-decoration: none;
+    margin-right: auto
   }
   
   
@@ -63,4 +64,88 @@
   .sign-in-link:hover {
     color: #005ca3;
   }
+
+  /* User dropdown */
+  .user-dropdown {
+    position: relative;
+  }
+
+  .user-dropdown-link {
+    color: #0077cc;
+    text-decoration: underline;
+    /* cursor: pointer; */
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  /* .user-dropdown-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-weight: normal;
+    color: #333;
+    white-space: nowrap;
+    text-decoration: none;
+  } */
+  
+  .user-dropdown-link:hover {
+    color: #0077c0;
+    cursor: pointer;
+  }
+  
+  .user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 4px 0 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    border-radius: 4px;
+  }
+  
+  /* .user-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 20px;
+    clear: both;
+    font-weight: normal;
+    color: #333;
+    white-space: nowrap;
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    transition: background-color 0.3s ease-in-out;
+  } */
+  
+  .user-dropdown-item:hover {
+    background-color: #f6f6c5;
+    cursor: pointer;
+  }  
+  
+.user-dropdown-container {
+    position: relative;
+  }
+  
+  .user-dropdown-content {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-dropdown-content a {
+    text-decoration: none;
+    color: black;
+    margin: 5px 0;
+  } 
   

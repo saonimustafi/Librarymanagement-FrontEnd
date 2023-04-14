@@ -1,8 +1,7 @@
 import React, { useEffect, useState }  from 'react'
 import { useParams } from "react-router-dom";
 import './UserRequestBucketPage.css';
-import moment from 'moment';
-
+import TopNav from '../components/TopNav';
 
 const UserRequestBucketPage = () => {
     const [activity, setActivity] = useState(null)
@@ -57,6 +56,7 @@ const UserRequestBucketPage = () => {
     
     return (
         <div>
+            <TopNav />
             <h2 className="request-table-header">Request Bucket</h2>
           <table className="request-table">
             <thead>

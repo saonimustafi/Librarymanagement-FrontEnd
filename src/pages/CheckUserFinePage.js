@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import './CheckUserFinePage.css'
+import TopNav from '../components/TopNav';
 
 const CheckUserFinePage = () => {
     const { user_id } = useParams()
@@ -51,6 +52,7 @@ const CheckUserFinePage = () => {
 
     return(
         <div>
+            <TopNav />
             <h2 className="fine-table-header">User Fine</h2>
             <table className="fine-table">
                 <thead>
