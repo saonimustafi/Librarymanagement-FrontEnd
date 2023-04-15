@@ -75,8 +75,6 @@ function TopNav() {
       </ul> */}
 
       {isLoggedIn ? (
-        // <p>Hello, {userEmail}!</p>
-
           <div className="user-dropdown-container">
           <Link to="#" className="user-dropdown-link" onClick={handleDropdown}>
             <p>Hello, {currentUser.name}</p>
