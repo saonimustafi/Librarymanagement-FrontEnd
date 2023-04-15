@@ -60,10 +60,11 @@ function TopNav() {
   
     return (
     <nav className="top-nav">
-      <Link to="/" className="logo-link">
+      <a href="/" className="logo-link">
         <img src={LOGO_IMG_URL} alt="Company logo" className="logo" />
-      </Link>
-      <Link to="/" className="company-name">Library Portal</Link>
+      </a>      
+      <a href="/" className="company-name">Library Portal</a>  
+
       {/* <ul className="menu">
         <li className="menu-item">
           <Link to="/categories" className="menu-link">Categories</Link>
@@ -86,7 +87,7 @@ function TopNav() {
               <Link to={`/userActivities/${currentUser.id}`}>Activity history</Link>
               <Link to={`/checkUserFine/${currentUser.id}`}>Fines (if any)</Link>
               <Link to={`/checkUserRequestBucket/${currentUser.id}`}>Request bucket</Link>
-              <a href="#" onClick={handleLogout}>Log out</a>
+              <a href="/" onClick={handleLogout}>Log out</a>
               {/* <button onClick={handleLogout}>Log out</button> */}
             </div>
           )}

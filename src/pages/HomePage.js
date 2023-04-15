@@ -118,10 +118,10 @@ function HomePage() {
             <p>Loading...</p>
           ) : (
             <>
-              {console.log("In HomePage.js: requestedBookIDs=" + requestedBookIDs)}
+              {/* {console.log("In HomePage.js: requestedBookIDs=" + requestedBookIDs)} */}
               {books.map((book) => {
                 const isBookRequested = requestedBookIDs.includes(book.id);
-                {console.log("In HomePage.js: book=" + book.title + " id="+book.id+" isBookRequested="+isBookRequested)}
+                // {console.log("In HomePage.js: book=" + book.title + " id="+book.id+" isBookRequested="+isBookRequested)}
                 return (
                   <Book
                     key={book.id}
