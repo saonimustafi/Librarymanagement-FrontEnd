@@ -5,6 +5,7 @@
     padding: 10px 30px;
     background-color: #ffffe0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
   
   .logo-link {
@@ -78,16 +79,6 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   
-  /* .user-dropdown-link {
-    display: block;
-    width: 100%;
-    text-align: left;
-    font-weight: normal;
-    color: #333;
-    white-space: nowrap;
-    text-decoration: none;
-  } */
-  
   .user-dropdown-link:hover {
     color: #0077c0;
     cursor: pointer;
@@ -144,6 +135,65 @@
   }
   
   .user-dropdown-content a {
+    text-decoration: none;
+    color: black;
+    margin: 5px 0;
+  } 
+
+  /* Notification dropdown */
+  .notifications-dropdown {
+    position: relative;
+  }
+
+  .notifications-dropdown-link {
+    color: #0077cc;
+    text-decoration: underline;
+    /* cursor: pointer; */
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  .notifications-dropdown-link:hover {
+    color: #0077c0;
+    cursor: pointer;
+  }
+  
+  .notifications-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1;
+    min-width: 160px;
+    padding: 8px 0;
+    margin: 4px 0 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    border-radius: 4px;
+  }
+  
+  .notifications-dropdown-item:hover {
+    background-color: #f6f6c5;
+    cursor: pointer;
+  }  
+  
+  .notifications-dropdown-container {
+    position: relative;
+  }
+  
+  .notifications-dropdown-content {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notifications-dropdown-content a {
     text-decoration: none;
     color: black;
     margin: 5px 0;
