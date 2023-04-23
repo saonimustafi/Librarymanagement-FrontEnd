@@ -7,6 +7,7 @@ function Book({ book, user_id, isBookRequested, isLoggedIn, isFetchRequestedBook
   const [message, setMessage] = useState('');
   const [addBookRequest, setAddBookRequest] = useState(null)
   const [showRequestBookButton, setShowRequestBookButton] = useState(true)
+  const [showDeleteBookButton, setShowDeleteBookButton] = useState(true)
 
   useEffect(() => {
     if (isFetchRequestedBooksCompleted) {
@@ -15,33 +16,38 @@ function Book({ book, user_id, isBookRequested, isLoggedIn, isFetchRequestedBook
       console.log('book='+JSON.stringify(book) + ' user_id='+user_id+ ' isBookRequested='+isBookRequested+ ' isLoggedIn='+isLoggedIn+" isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted)
       setShowRequestBookButton(!isBookRequested);
     }
-  }, [isFetchRequestedBooksCompleted]);
+
+    // else {
+    //   setShowRequestBookButton(!isBookRequested);
+    // }
+  }, [isBookRequested, isFetchRequestedBooksCompleted]);
 
 
   const requestBook = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/requests/newrequests/${user_id}/${book.book_id}`, {
+      const response = await fetch(`http://localhost:3000/requests/newrequests/${user_id}/${book.id}`, {
         method: 'POST',
       });
 
-      if(this.book.count === 0) {
-        setMessage('Book not available in the library. Please contact Admin');
-        showRequestBookButton(false)
-      }
+      // if(this.book.count === 0) {
+      //   setMessage('Book not available in the library. Please contact Admin');
+      //   showRequestBookButton(false)
+      // }
       
       const responseData = await response.json();
       setAddBookRequest(responseData)
 
-      if (addBookRequest.status === 201) {
+
+      if (response.status === 201) {
         console.log('Request successful');
-        setMessage('Item added to cart successfully!');
+        setMessage('Book requested successfully!');
         setShowRequestBookButton(false)       
       } 
-      else if (addBookRequest.status === 404) {
+      else if (response.status === 404) {
         setMessage('Book Not Found');
         setShowRequestBookButton(false)
       }
-      else if (addBookRequest.status === 200 && addBookRequest.message === "Book not available in the library") {
+      else if (response.status === 200 && addBookRequest.message === "Book not available in the library") {
         setMessage('Book not available in the library. Please contact Admin');
         showRequestBookButton(false)
       }
@@ -57,19 +63,22 @@ function Book({ book, user_id, isBookRequested, isLoggedIn, isFetchRequestedBook
 
   const deleteRequest = async () => {
     try {
-      const response = await fetch('http://localhost:3000/books', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3000/requests/deleterequests/${user_id}/${book.id}`, {
+        method: 'DELETE',
       });
-      if (response.ok) {
+      if (response.status === 200) {
         console.log('Request successful');
-        setMessage('Request deleted successfully!');       
-      } else {
-        console.log('Request failed');
-        setMessage('Error deleting request');
+        setMessage('Book Request deleted successfully!'); 
+        setShowDeleteBookButton(false);  
+      } 
+      
+      else if (response.status === 404) {
+        console.log('Book not found');
+        setMessage('Book has not been requested');
       }
     } catch (error) {
       console.log('Error:', error);
-      setMessage('System Error while deleting request.');
+      setMessage('Something is wrong');
     }
   };
 
@@ -86,12 +95,12 @@ function Book({ book, user_id, isBookRequested, isLoggedIn, isFetchRequestedBook
         {/* <p className="book-description">{book.description}</p> */}
         {/* <button onClick={handleButtonClick}>Add to Cart</button> */}
 
-        {/* {console.log("CP1: Book.js: isBookRequested=" + isBookRequested + " showRequestBookButton="+showRequestBookButton+ 
-        " isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted+" isLoggedIn="+isLoggedIn)} */}
+        {console.log("CP1: Book.js: book.title="+book.title+" isBookRequested=" + isBookRequested + " showRequestBookButton="+showRequestBookButton+ 
+        " isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted+" isLoggedIn="+isLoggedIn)}
         {isLoggedIn && !isBookRequested && showRequestBookButton ? (
           <button className="request-book" onClick={requestBook}>Request book</button>
         ) : 
-        isLoggedIn && isBookRequested? (
+        isLoggedIn && isBookRequested && showDeleteBookButton? (
           <button className="delete-request" onClick={deleteRequest}>Delete request</button>
         ) :
         (
