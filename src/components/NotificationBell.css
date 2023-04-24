@@ -45,7 +45,7 @@
   }
 
   .notification-item.read:hover {
-    background-color: white;
+    background-color: #e2dddd;
   }
   
   .notification-item.unread {
@@ -54,7 +54,7 @@
   }
 
   .notification-item.unread:hover {
-    background-color: white;
+    background-color: #e2dddd;
   }  
   
   .notification-text {
