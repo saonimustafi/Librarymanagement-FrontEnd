@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './RegisterUserPage.css'
 
 function RegisterUser() {
   const [username, setUsername] = useState('');
@@ -12,37 +13,38 @@ function RegisterUser() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="register-page">
+      <h1 className="register-heading">Register</h1>
+      <form className="register-form" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username" className="register-label">Username:</label>
           <input
             type="text"
             id="username"
+            className="register-input"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
+        
+          <label htmlFor="email" className="register-label">Email:</label>
           <input
             type="email"
             id="email"
+            className="register-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        
+          <label htmlFor="password" className="register-label">Password:</label>
           <input
             type="password"
             id="password"
+            className="register-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="register-button">Register</button>
       </form>
     </div>
   );
