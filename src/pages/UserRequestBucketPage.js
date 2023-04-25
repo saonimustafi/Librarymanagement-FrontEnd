@@ -42,8 +42,8 @@ const UserRequestBucketPage = () => {
                     .filter(book => ((book.approvalStatus === 'Pending' || book.approvalStatus === 'Approved') && (book.checkOutDate == null)))
                     .map((book) => ({
                         ...book,
-                        bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
-                        userBooks.find(b => b.title === book.title).image : ""
+                        bookImage: (book && userBooks && userBooks[0].find(b => b.title === book.title)) ? 
+                        userBooks[0].find(b => b.title === book.title).image : ""
                     }))
                 }))
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
