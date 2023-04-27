@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import './CheckUserFinePage.css'
 import TopNav from '../components/TopNav';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const CheckUserFinePage = () => {
     const { user_id } = useParams()
@@ -85,11 +87,17 @@ const CheckUserFinePage = () => {
                                 ( combinedData.length > 0 && combinedData.map((activityListItem) => (
 
                                         <tr key = {activityListItem.book_id}>
+
                                             <td><img src = {activityListItem.bookImage} alt = {`${activityListItem.bookName} cover`}/></td>
+                                            
                                             <td>{activityListItem.bookName}</td>
+
                                             <td>{new Date(activityListItem.returnDate).toLocaleDateString()}</td>
+
                                             <td>{new Date(activityListItem.actualReturnDate).toLocaleDateString()}</td>
-                                            <td>{activityListItem.finePaid ? "Yes" : "No"}</td> 
+
+                                            <td className="green-check-red-cross">{activityListItem.finePaid ? <FontAwesomeIcon icon={faCheck} className="fa-check"/> : <FontAwesomeIcon icon={faTimes} />}</td>
+                                            
                                             <td colSpan="8">{activityListItem.fineToPay}</td>
                                         </tr>
                                     )
@@ -102,7 +110,7 @@ const CheckUserFinePage = () => {
                                         combinedData !== null && combinedData.length !== 0 && (
                                             <tr>
                                                 <td id="fine-table-total-fine" colSpan="8">Total Fine Due</td>
-                                                <td>
+                                                <td id="fine-table-total-fine-number">
                                                     {
                                                         combinedData.reduce((totalfine, activityItem) => {
                                                             if (activityItem.finePaid === false) {

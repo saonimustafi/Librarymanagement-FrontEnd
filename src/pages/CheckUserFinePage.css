@@ -35,6 +35,18 @@
     font-weight: bold;
     font-size: 16px;
  }
+ 
+ #fine-table-total-fine-number {
+  font-weight: bold;
+}
+
+ .green-check-red-cross {
+  color: red;
+}
+
+.green-check-red-cross .fa-check {
+  color: green;
+}
   
   @media (max-width: 600px) {
     .fine-table th {
