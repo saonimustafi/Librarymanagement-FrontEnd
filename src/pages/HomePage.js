@@ -9,6 +9,7 @@ function HomePage() {
   const [expanded, setExpanded] = useState(false);
   const [books, setBooks] = useState([]);
   const [requestedBookIDs, setRequestedBookIDs] = useState([]);
+  const [borrowedBookIDs, setBorrowedBookIDs] = useState([]);
   const [isFetchRequestedBooksCompleted, setIsFetchRequestedBooksCompleted] = useState(false);
   const [currentUser, setCurrentUser] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,8 +33,26 @@ function HomePage() {
                 try {
                     const response = await fetch(`http://localhost:3000/requests/${data.id}`)
                     const responseData = await response.json()
-                    const bookIDs = (responseData && responseData.books) ? responseData.books.map((request) => request.book_id) : [];                    
+
+                    const checkOutDetailsResponse = await fetch(`http://localhost:3000/checkoutdetails/${data.id}`)
+                    const checkOutResponse = await checkOutDetailsResponse.json();
+
+                    const bookIDs = (responseData && responseData.books) ? 
+                                      responseData.books
+                                      .filter((book) => book.checkOutDate == null && (book.approvalStatus === "Approved" || book.approvalStatus === "Pending" ))
+                                      .map((request) => request.book_id) 
+                                      : [];    
+                                                      
                     setRequestedBookIDs(bookIDs)
+
+                    const alreadyBorrowedBookIDs = (checkOutResponse && checkOutResponse[0].books) ? 
+                                      checkOutResponse[0].books
+                                      .filter((book) => book.checkOutDate !== null && book.actualReturnDate === null)
+                                      .map((request) => request.book_id) 
+                                      : []; 
+
+                    setBorrowedBookIDs(alreadyBorrowedBookIDs)
+                    
                     setIsFetchRequestedBooksCompleted(true)
                 }
                 catch(error) {
@@ -122,6 +141,7 @@ function HomePage() {
               {books.map((book) => {
                 const isBookRequested = requestedBookIDs.includes(book.id);
                 // {console.log("In HomePage.js: book=" + book.title + " id="+book.id+" isBookRequested="+isBookRequested)}
+                const isAlreadyBorrowedBookID = borrowedBookIDs.includes(book.id);
                 return (
                   <Book
                     key={book.id}
@@ -129,6 +149,8 @@ function HomePage() {
                     user_id={currentUser.id}
                     isBookRequested={isBookRequested}
                     isLoggedIn={isLoggedIn}
+                    isAlreadyBorrowedBookID = {isAlreadyBorrowedBookID}
+                    isFetchRequestedBooksCompleted={isFetchRequestedBooksCompleted}
                   />
                 );
               })}

@@ -46,11 +46,14 @@ const UserActivitiesPage = () => {
                     .map((book) => ({
                         ...book,
 
-                        bookImage: (book && userBooks.find(b => b.title === book.title)) ? 
-                        userBooks.find(b => b.title === book.title).image : '',
+                        bookImage: (book && userBooks[0].find(b => b.title === book.title)) ? 
+                        userBooks[0].find(b => b.title === book.title).image : '',
 
                         bookReturnDate: (book && returnDateData[0].books.find(b => b.book_id === book.book_id)) ?
-                        returnDateData[0].books.find(b => b.book_id === book.book_id).returnDate : ''
+                        returnDateData[0].books.find(b => b.book_id === book.book_id).returnDate : '',
+
+                        bookActualReturnDate: (book && returnDateData[0].books.find(b => b.book_id === book.book_id)) ?
+                        returnDateData[0].books.find(b => b.book_id === book.book_id).actualReturnDate : ''
                     }))
                 }))
                 const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
@@ -86,12 +89,12 @@ const UserActivitiesPage = () => {
                                 <tr key = {book.book_id}>
                                     <td><img src = {book.bookImage} alt = {`${book.bookName} cover`}/></td>
                                     <td>{book.title}</td>
-                                    <td>{book.requestDate}</td>
-                                    <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
+                                    <td>{new Date(book.requestDate).toLocaleDateString()}</td>
+                                    <td>{(book.approvedOrRejectedDate) ? new Date(book.approvedOrRejectedDate).toLocaleDateString() : "-"}</td>
                                     <td>{book.approvalStatus}</td>
-                                    <td>{(book.checkOutDate)? book.checkOutDate : "-"}</td>
-                                    <td>{(book.bookReturnDate) ? book.bookReturnDate : "-"}</td>
-                                    <td>{(book.actualReturnDate)? book.actualReturnDate : "-"}</td>
+                                    <td>{(book.checkOutDate)? new Date(book.checkOutDate).toLocaleDateString() : "-"}</td>
+                                    <td>{(book.bookReturnDate) ? new Date(book.bookReturnDate).toLocaleDateString() : "-"}</td>
+                                    <td>{(book.bookActualReturnDate)? new Date(book.bookActualReturnDate).toLocaleDateString() : "-"}</td>
                                     <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>
                             ))

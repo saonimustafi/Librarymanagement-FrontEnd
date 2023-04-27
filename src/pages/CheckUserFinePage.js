@@ -32,33 +32,17 @@ const CheckUserFinePage = () => {
 
     useEffect(() => {
         function generateCombinedData() {
-
-            // if(userFineList && userBooks)  {
-            //     const combinedDatagenerated = 
-            //     userFineList[0].map((fineListItem) => ({
-            //         ...fineListItem,
-            //         books: fineListItem.booksBorrowed.map((book) => ({
-            //             ...book,
-            //             bookImage: userBooks[0].find(b => b.id === book.book_id)?.image || '',
-            //             bookName: userBooks[0].find(b => b.id === book.book_id)?.title || ''}))
-            //         }))
-            //         setCombinedData(combinedDatagenerated)
-            // }
-
             if(userFineList && userBooks)  {
+
                 const combinedDataGenerated = 
                 userFineList[0].map((activityListItem) => ({
                     ...activityListItem,
                     bookImage: userBooks[0].find(b => b.id === activityListItem.booksBorrowed.book_id)? userBooks[0].find(b => b.id === activityListItem.booksBorrowed.book_id).image : '',
                         bookName: userBooks[0].find(b => b.id === activityListItem.booksBorrowed.book_id)? userBooks[0].find(b => b.id === activityListItem.booksBorrowed.book_id).title : ''
-                    // books: activityListItem.booksBorrowed.map((book) => ({
-                        // ...book,
-                        // bookImage: userBooks[0].find(b => b.id === book.book_id)? userBooks[0].find(b => b.id === book.book_id).image : '',
-                        // bookName: userBooks[0].find(b => b.id === book.book_id)? userBooks[0].find(b => b.id === book.book_id).title : ''
-                    // }))
+                    
                     })
                     )
-                    // const combinedDataModified = (combinedData) ? combinedData.filter(data => data.books.length !== 0) : null
+
                     const combinedDataModified = 
                     combinedDataGenerated.flatMap(activityListItem =>activityListItem.booksBorrowed
                             .filter(book => book.fineToPay > 0)
@@ -105,7 +89,7 @@ const CheckUserFinePage = () => {
                                             <td>{activityListItem.bookName}</td>
                                             <td>{new Date(activityListItem.returnDate).toLocaleDateString()}</td>
                                             <td>{new Date(activityListItem.actualReturnDate).toLocaleDateString()}</td>
-                                            <td>{activityListItem.finePaid ? "Yes" : "No"}</td>
+                                            <td>{activityListItem.finePaid ? "Yes" : "No"}</td> 
                                             <td colSpan="8">{activityListItem.fineToPay}</td>
                                         </tr>
                                     )
@@ -114,55 +98,24 @@ const CheckUserFinePage = () => {
                                         <td colSpan="8">No fine due</td>
                                     </tr>
                                     )}
-                            {/* {
-                                combinedData && (
-                                                combinedData
-                                                .flatMap((activityItem) => activityItem.books)
-                                                .reduce((totalFine, book) => totalFine + (book.fineToPay || 0),0) > 0 ? (
-                                                    <tr>
-                                                        <td id="fine-table-total-fine" colSpan="8">
-                                                            Total Fine
-                                                        </td>
-                                                        <td>
-                                                        {combinedData
-                                                            .flatMap((activityItem) => activityItem.books)
-                                                            .reduce((totalFine, book) => {
-                                                                if (!book.finePaid) {
-                                                                    return totalFine + book.fineToPay
-                                                                }
-                                                                return totalFine;
-                                                            },0)
-                                                        }
-                                                        </td>
-                                                    </tr>
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="8">No Fines due</td>
-                                                    </tr>
-                                                )
-                                )}                   */}
-
-{
-                                    combinedData !== null && combinedData.length !== 0 && (
-                                        <tr>
-                                            <td id="fine-table-total-fine" colSpan="8">Total Fine</td>
-                                            <td>
-                                                {
-                                                    // combinedDataFiltered
-                                                    // .flatMap((activityItem) => activityItem.books)
-                                                    // .reduce((totalFine, book) => totalFine + (book.fineToPay || 0),0)
-                                                    combinedData.reduce((totalfine, activityItem) => {
-                                                        if (activityItem.finePaid === "No") {
-                                                          return totalfine + (activityItem.fineToPay || 0);
-                                                        } else {
-                                                          return totalfine;
-                                                        }
-                                                      }, 0)
-                                                }
-                                            </td>
-                                        </tr>
-                                    )
-                                }
+                                    {
+                                        combinedData !== null && combinedData.length !== 0 && (
+                                            <tr>
+                                                <td id="fine-table-total-fine" colSpan="8">Total Fine Due</td>
+                                                <td>
+                                                    {
+                                                        combinedData.reduce((totalfine, activityItem) => {
+                                                            if (activityItem.finePaid === false) {
+                                                            return totalfine + (activityItem.fineToPay || 0);
+                                                            } else {
+                                                            return totalfine;
+                                                            }
+                                                        }, 0)
+                                                    }
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                         </tbody>  
             </table>
         </div>

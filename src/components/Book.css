@@ -95,3 +95,9 @@
 .book-info .delete-request:hover {
   background-color: #d65747;
 }
+
+.borrowed-message {
+  color: #c79912;
+  font-size: 14px;
+  font-weight: bold;
+}
