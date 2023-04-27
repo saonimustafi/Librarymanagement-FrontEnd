@@ -79,10 +79,10 @@ const UserRequestBucketPage = () => {
                                 <tr key = {book.id}>
                                     <td><img src = {book.bookImage} alt = {`${book.bookImage} cover`}/></td>
                                     <td>{book.title}</td>
-                                    <td>{(book.requestDate) ? book.requestDate : "-"}</td>
-                                    <td>{(book.approvedOrRejectedDate) ? book.approvedOrRejectedDate : "-"}</td>
+                                    <td>{(book.requestDate) ? new Date(book.requestDate).toLocaleDateString() : "-"}</td>
+                                    <td>{(book.approvedOrRejectedDate) ? new Date(book.approvedOrRejectedDate).toLocaleDateString() : "-"}</td>
                                     <td>{book.approvalStatus}</td>
-                                    <td>{(book.checkOutDate) ? book.checkOutDate : "-"}</td>
+                                    <td>{(book.checkOutDate) ? new Date(book.checkOutDate).toLocaleDateString() : "-"}</td>
                                     <td>{(book.comments) ? book.comments : ""}</td>
                                 </tr>
                             ))

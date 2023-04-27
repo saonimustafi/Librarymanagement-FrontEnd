@@ -2,25 +2,51 @@ import { useState, useEffect } from 'react';
 // import { useParams } from 'react-router-dom';
 import './Book.css';
 
-function Book({ book, user_id, isBookRequested, isLoggedIn, isFetchRequestedBooksCompleted }) {
+function Book({ book, user_id, isBookRequested, isLoggedIn, isAlreadyBorrowedBookID, isFetchRequestedBooksCompleted }) {
   const [isHovered, setIsHovered] = useState(false);
   const [message, setMessage] = useState('');
+  const [showBorrowedMessage, setShowBorrowedMessage] = useState('')
   const [addBookRequest, setAddBookRequest] = useState(null)
   const [showRequestBookButton, setShowRequestBookButton] = useState(true)
   const [showDeleteBookButton, setShowDeleteBookButton] = useState(true)
 
   useEffect(() => {
     if (isFetchRequestedBooksCompleted) {
+      if(isAlreadyBorrowedBookID) {
+        console.log('In Book.js')
+        console.log('book='+JSON.stringify(book) + ' isAlreadyBorrowedBookIDs = '+isAlreadyBorrowedBookID + ' user_id='+user_id+ ' isBookRequested='+isBookRequested+ ' isLoggedIn='+isLoggedIn+" isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted)
+        setShowRequestBookButton(false);
+        setShowDeleteBookButton(false)
+        setShowBorrowedMessage('Book has been borrowed');
+      }
+      else {
       // setMessage('Book not available in the library. Please contact Admin');
       console.log('In Book.js')
       console.log('book='+JSON.stringify(book) + ' user_id='+user_id+ ' isBookRequested='+isBookRequested+ ' isLoggedIn='+isLoggedIn+" isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted)
       setShowRequestBookButton(!isBookRequested);
+      }
     }
-
     // else {
     //   setShowRequestBookButton(!isBookRequested);
     // }
-  }, [isBookRequested, isFetchRequestedBooksCompleted]);
+  }
+  , [isBookRequested, isFetchRequestedBooksCompleted]
+  );
+
+  // useEffect(() => {
+  //   if (isFetchRequestedBooksCompleted) {
+  //     // setMessage('Book not available in the library. Please contact Admin');
+  //     console.log('In Book.js')
+  //     console.log('book='+JSON.stringify(book) + ' isAlreadyBorrowedBookIDs = '+isAlreadyBorrowedBookIDs + ' user_id='+user_id+ ' isBookRequested='+isBookRequested+ ' isLoggedIn='+isLoggedIn+" isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted)
+  //     setShowRequestBookButton(false);
+  //     setShowDeleteBookButton(false)
+  //     setShowBorrowedMessage('Book has been borrowed');
+  //   }
+
+  //   // else {
+  //   //   setShowRequestBookButton(!isBookRequested);
+  //   // }
+  // }, [, isFetchRequestedBooksCompleted]);
 
 
   const requestBook = async () => {
@@ -97,15 +123,24 @@ function Book({ book, user_id, isBookRequested, isLoggedIn, isFetchRequestedBook
 
         {console.log("CP1: Book.js: book.title="+book.title+" isBookRequested=" + isBookRequested + " showRequestBookButton="+showRequestBookButton+ 
         " isFetchRequestedBooksCompleted="+isFetchRequestedBooksCompleted+" isLoggedIn="+isLoggedIn)}
-        {isLoggedIn && !isBookRequested && showRequestBookButton ? (
+
+        {isLoggedIn && !isBookRequested && showRequestBookButton ? 
+        (
           <button className="request-book" onClick={requestBook}>Request book</button>
         ) : 
+        isLoggedIn && isAlreadyBorrowedBookID ?
+        (
+          showBorrowedMessage && <p className="borrowed-message">{showBorrowedMessage}</p>
+        )  :
         isLoggedIn && isBookRequested && showDeleteBookButton? (
           <button className="delete-request" onClick={deleteRequest}>Delete request</button>
         ) :
+        
         (
-          <></>
-        ) }
+          <>
+          </>
+        )
+      }
         {message && <p className={message.includes('Error') ? 'error' : 'success'}>{message}</p>}
       </div>
     </div>
