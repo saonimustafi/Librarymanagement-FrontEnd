@@ -93,9 +93,9 @@ function TopNav() {
           {showDropdown && (
             <div className="user-dropdown-content">
               {/* <a href="/userActivities/{currentUser.id}">Activity history</a> */}
-              <Link to={`/userActivities/${currentUser.id}`} className="user-dropdown-item">Activity history</Link>
-              <Link to={`/checkUserFine/${currentUser.id}`} className="user-dropdown-item">Fines (if any)</Link>
-              <Link to={`/checkUserRequestBucket/${currentUser.id}`} className="user-dropdown-item">Request bucket</Link>
+              <Link to={`/userActivities/${currentUser.id}`} className="user-dropdown-item">Activity History</Link>
+              <Link to={`/checkUserFine/${currentUser.id}`} className="user-dropdown-item">Fines</Link>
+              <Link to={`/checkUserRequestBucket/${currentUser.id}`} className="user-dropdown-item">Request Bucket</Link>
               <a href="/" onClick={handleLogout}>Log out</a>
               {/* <button onClick={handleLogout}>Log out</button> */}
             </div>
