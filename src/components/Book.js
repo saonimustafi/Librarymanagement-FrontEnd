@@ -73,13 +73,17 @@ function Book({ book, user_id, isBookRequested, isLoggedIn, isAlreadyBorrowedBoo
         setMessage('Book Not Found');
         setShowRequestBookButton(false)
       }
-      else if (response.status === 200 && addBookRequest.message === "Book not available in the library") {
+      else if (response.status === 200 && (addBookRequest && addBookRequest.message === "Book not available in the library")) {
         setMessage('Book not available in the library. Please contact Admin');
         showRequestBookButton(false)
       }
-      else {
+      else if (response.status === 400 && (addBookRequest && addBookRequest.message === "Cannot add the book to the request bucket as it already exists for the user")) {
         console.log('Request failed');
-        setMessage('Error adding item to cart.');
+        setMessage('Book already exists for the user');
+      }
+      else if (response.status === 400 && (addBookRequest && addBookRequest.message === "Cannot add book. Book already borrowed")) {
+        console.log('Request failed');
+        setMessage('Book already borrowed the user');
       }
     } catch (error) {
       console.log('Error:', error);
