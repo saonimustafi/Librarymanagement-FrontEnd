@@ -30,7 +30,7 @@ function RegisterUser() {
       <h1 className="register-heading">Register</h1>
       <form className="register-form" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name" className="register-label">Username:</label>
+          <label htmlFor="name" className="register-label">Name:</label>
           <input
             type="text"
             id="name"
