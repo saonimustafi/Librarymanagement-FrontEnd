@@ -73,8 +73,8 @@ const CheckUserFinePage = () => {
                     <tr>
                         <th>Book Image</th>
                         <th>Book Name</th>
+                        <th>Due Date</th>
                         <th>Return Date</th>
-                        <th>Actual Return Date</th>
                         <th>Fine Paid</th>
                         <th colSpan="9">Fine</th>
                     </tr>
@@ -94,7 +94,7 @@ const CheckUserFinePage = () => {
 
                                             <td>{new Date(activityListItem.returnDate).toLocaleDateString()}</td>
 
-                                            <td>{new Date(activityListItem.actualReturnDate).toLocaleDateString()}</td>
+                                            <td>{activityListItem.actualReturnDate ? new Date(activityListItem.actualReturnDate).toLocaleDateString() : '-' }</td>
 
                                             <td className="green-check-red-cross">{activityListItem.finePaid ? <FontAwesomeIcon icon={faCheck} className="fa-check"/> : <FontAwesomeIcon icon={faTimes} />}</td>
                                             

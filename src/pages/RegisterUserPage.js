@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
 import './RegisterUserPage.css'
 
+
 function RegisterUser() {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log('Submitted');
+    try {
+      const response = await fetch('http://localhost:3000/users/newUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
+        });
+    }
+    catch(error) {
+      console.log(error)
+    }
+    console.log('Submitted')
+    window.location.href = '/login'
   };
 
   return (
@@ -17,13 +30,13 @@ function RegisterUser() {
       <h1 className="register-heading">Register</h1>
       <form className="register-form" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username" className="register-label">Username:</label>
+          <label htmlFor="name" className="register-label">Name:</label>
           <input
             type="text"
-            id="username"
+            id="name"
             className="register-input"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         
           <label htmlFor="email" className="register-label">Email:</label>
@@ -49,5 +62,6 @@ function RegisterUser() {
     </div>
   );
 }
+
 
 export default RegisterUser;

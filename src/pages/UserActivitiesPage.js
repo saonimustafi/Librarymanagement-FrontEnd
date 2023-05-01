@@ -76,8 +76,8 @@ const UserActivitiesPage = () => {
                     <th>Approval Date</th>
                     <th>Approval Status</th>
                     <th>CheckOut Date</th>
+                    <th>Due Date</th>
                     <th>Return Date</th>
-                    <th>Actual Return Date</th>
                     <th>Comments</th>
                 </tr>
             </thead>
