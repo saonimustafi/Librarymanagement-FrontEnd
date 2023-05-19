@@ -39,7 +39,7 @@ function HomePage() {
 
                     const bookIDs = (responseData && responseData.books) ? 
                                       responseData.books
-                                      .filter((book) => book.checkOutDate == null && (book.approvalStatus === "Approved" || book.approvalStatus === "Pending" ))
+                                      .filter((book) => book.checkOutDate == null && (book.approvalStatus === "Approved" || book.approvalStatus === "Pending"))
                                       .map((request) => request.book_id) 
                                       : [];    
                                                       
